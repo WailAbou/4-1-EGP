@@ -6,29 +6,38 @@ public class GridAnimation : MonoBehaviour
     private float _startHeight;
     private Renderer _renderer;
     private Color _startColor;
-
+    private BoardManager _boardManager;
 
     private void Awake()
     {
-        _startHeight = transform.position.y;
         _renderer = GetComponent<Renderer>();
-        _startColor = _renderer.material.color;
     }
 
-    private void Start() => OnStartAnimation();
+    private void Start()
+    {
+        _startHeight = transform.position.y;
+        _startColor = _renderer.material.color;
+        _boardManager = BoardManager.Instance;
 
-    private void OnStartAnimation()
+        _boardManager.OnHoverEnter += HoverEnterAnimation;
+        _boardManager.OnHoverLeave += HoverLeaveAnimation;
+        StartAnimation();
+    }
+
+    private void StartAnimation()
     {
         transform.DOMoveY(_startHeight + 1.0f, 0).OnComplete(() => transform.DOMoveY(_startHeight, Constants.GRIDPIECE_START_DURATION));
     }
 
-    public void OnHoverEnterAnimation()
+    public void HoverEnterAnimation(GridPiece gridPiece)
     {
-        _renderer.material.color = Color.white;
+        if (gridPiece.Anim == this) 
+            _renderer.material.color = Color.white;
     }
 
-    public void OnHoverLeaveAnimation()
+    public void HoverLeaveAnimation(GridPiece gridPiece)
     {
-        _renderer.material.color = _startColor;
+        if (gridPiece.Anim == this)
+            _renderer.material.color = _startColor;
     }
 }

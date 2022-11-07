@@ -26,7 +26,7 @@ public class GeneratorManager : Singleton<GeneratorManager>
         _boardManager = BoardManager.Instance;
         _gridWith = 1.0f / GridSize.x;
         _gridHeight = 1.0f / GridSize.y;
-        _origin = new Vector2(-(_gridWith * (GridSize.x / 2)) + (_gridWith / 2), (_gridHeight * (GridSize.y / 2)) - (_gridHeight / 2));
+        _origin = new Vector2(-(_gridWith * (GridSize.x / 2)) + (_gridWith / 2), -(_gridHeight * (GridSize.y / 2)) + (_gridHeight / 2));
         _boardManager.GridPieces = new GridPiece[GridSize.y, GridSize.x];
 
         StartCoroutine(GenerateMap());
@@ -42,7 +42,7 @@ public class GeneratorManager : Singleton<GeneratorManager>
                 {
                     var gridPiece = PickGridPiece(x, y);
                     SpawnGridPiece(x, y, gridPiece);
-                    yield return new WaitForSecondsRealtime(0.05f);
+                    yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_SPAWN_DELAY);
                 }
             }
 
@@ -63,7 +63,7 @@ public class GeneratorManager : Singleton<GeneratorManager>
     {
         var spawned = Instantiate(islandPiece, GridPiecesHolder);
 
-        var position = new Vector3(_origin.x + (_gridWith * x), 0.55f, _origin.y - (_gridHeight * y));
+        var position = new Vector3(_origin.x + (_gridWith * x), 0.55f, _origin.y + (_gridHeight * y));
         var scale = new Vector3(_gridWith, 0.1f, _gridHeight);
 
         spawned.transform.localPosition = position;

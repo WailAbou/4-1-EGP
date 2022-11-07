@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class BoardManager : Singleton<BoardManager>
 {
@@ -10,6 +9,9 @@ public class BoardManager : Singleton<BoardManager>
     public GridPiece[,] GridPieces;
     public GridPiece SelectedPiece;
 
+    public Action<GridPiece> OnHoverEnter;
+    public Action<GridPiece> OnHoverLeave;
+
     private GridPiece _hoverPiece;
 
     public GridPiece FindPiece(GameObject go) => GridPieces.Cast<GridPiece>().Where(gp => gp.go == go).FirstOrDefault();
@@ -17,15 +19,14 @@ public class BoardManager : Singleton<BoardManager>
     public void HoverPiece(GridPiece piece)
     {
         if (_hoverPiece != null && _hoverPiece != piece)
-            _hoverPiece.Anim.OnHoverLeaveAnimation();
+            OnHoverLeave?.Invoke(_hoverPiece);
 
         _hoverPiece = piece;
-        _hoverPiece.Anim.OnHoverEnterAnimation();
+        OnHoverEnter?.Invoke(_hoverPiece);
     }
 
     public void SelectPiece(GridPiece piece)
     {
         SelectedPiece = piece;
-        Debug.Log(SelectedPiece.go.transform.position);
     }
 }

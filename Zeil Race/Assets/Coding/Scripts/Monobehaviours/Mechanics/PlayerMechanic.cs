@@ -5,27 +5,20 @@ using UnityEngine;
 
 public class PlayerMechanic : MonoBehaviour
 {
-    private GameManager _gameManager;
-    private BoardManager _boardManager;
+    public Renderer Sail;
 
-    private bool MyTurn => _gameManager.CurrentPlayer == this;
+    private PlayerManager _playerManager;
+    private BoardManager _boardManager;
 
     private void Start()
     {
-        _gameManager = GameManager.Instance;
+        _playerManager = PlayerManager.Instance;
         _boardManager = BoardManager.Instance;
     }
 
     private void Update()
     {
-        if (MyTurn && Input.GetMouseButtonDown(0) && _boardManager.SelectedPiece != null)
-            Move();
-    }
-
-    private void Move()
-    {
-        var target = _boardManager.SelectedPiece.go.transform.position;
-        transform.DOMove(target, 1.0f);
-        transform.DOLookAt(target, 0.5f);
+        if (Input.GetMouseButtonDown(0)  && _boardManager.SelectedPiece != null && _playerManager.CheckTurn(this))
+            _playerManager.MakeTurn(transform);
     }
 }

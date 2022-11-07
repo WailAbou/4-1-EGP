@@ -8,27 +8,38 @@ public class CameraManager : Singleton<CameraManager>
     public List<CinemachineVirtualCamera> Cams;
     public CinemachineVirtualCamera FollowCam;
 
-    private GameManager _gameManager;
+    private PlayerManager _playerManager;
     private CinemachineVirtualCamera _camCurrent;
     private int _camIndex;
 
     public override void Start()
     {
         base.Start();
-        _gameManager = GameManager.Instance;
-        if (FollowCam) Cams.Add(FollowCam);
+
+        _playerManager = PlayerManager.Instance;
+        if (FollowCam)
+        {
+            _playerManager.OnPlayersSpawned += SetFollowCam;
+            _playerManager.OnMoveEnd += SetFollowTarget;
+        }
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.C)) 
             SwitchCams();
+    }
 
-        if (FollowCam != null && _gameManager.CurrentPlayer != null)
-        {
-            FollowCam.Follow = _gameManager.CurrentPlayer.transform;
-            FollowCam.LookAt = _gameManager.CurrentPlayer.transform;
-        }
+    private void SetFollowCam(PlayerMechanic[] players)
+    {
+        Cams.Add(FollowCam);
+        SetFollowTarget(players[0].transform);
+    }
+
+    private void SetFollowTarget(Transform player)
+    {
+        FollowCam.Follow = player.transform;
+        FollowCam.LookAt = player.transform;
     }
 
     public void SwitchCams()

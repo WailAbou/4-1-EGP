@@ -3,17 +3,29 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
+    private PlayerManager _playerManager;
     private Vector3 _startScale;
 
     private void Start()
     {
+        _playerManager = PlayerManager.Instance;
+        _playerManager.OnMoveStart += OnMoveStartAnimation;
+
         _startScale = transform.localScale;
         transform.localScale = Vector3.zero;
-        OnStartAnimation();
+        StartAnimation();
     }
 
-    public void OnStartAnimation()
+    public void StartAnimation()
     {
         transform.DOScale(_startScale, Constants.PLAYER_START_DURATION);
+    }
+
+    private void OnMoveStartAnimation(Transform player, Vector3 target)
+    {
+        if (player != transform) return;
+
+        transform.DOMove(target, Constants.PLAYER_MOVE_DURATION);
+        transform.DOLookAt(target, Constants.PLAYER_MOVE_DURATION / 2);
     }
 }
