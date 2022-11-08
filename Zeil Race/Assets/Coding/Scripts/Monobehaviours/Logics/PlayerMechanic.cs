@@ -1,6 +1,3 @@
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMechanic : MonoBehaviour
@@ -14,11 +11,14 @@ public class PlayerMechanic : MonoBehaviour
     {
         _playerManager = PlayerManager.Instance;
         _boardManager = BoardManager.Instance;
+
+        _boardManager.OnSelect += TakeTurn;
     }
 
-    private void Update()
+    private void TakeTurn(GridPiece gridPiece)
     {
-        if (Input.GetMouseButtonDown(0)  && _boardManager.SelectedPiece != null && _playerManager.CheckTurn(this))
-            _playerManager.MakeTurn(transform);
+        if (!_playerManager.CheckTurn(this)) return;
+
+        _playerManager.TakeTurn(transform, gridPiece.gameObject.transform);
     }
 }

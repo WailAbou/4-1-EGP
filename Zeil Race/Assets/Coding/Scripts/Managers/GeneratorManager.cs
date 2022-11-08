@@ -12,10 +12,10 @@ public class GeneratorManager : Singleton<GeneratorManager>
     public Vector2Int GridSize = new Vector2Int(10, 10);
 
     public Action OnGenerateDone;
-    public Action OnAnimationsDone;
+    public Action<GridPiece> OnAnimationsDone;
 
     private BoardManager _boardManager;
-    private Vector2 _origin;
+    public Vector2 _origin;
     private float _gridWith;
     private float _gridHeight;
 
@@ -36,12 +36,15 @@ public class GeneratorManager : Singleton<GeneratorManager>
     {
         if (GridPiecePrefabs?.Length > 0 && GridPiecesHolder)
         {
+            GridPiece startGrid = null;
+
             for(int y = 0; y < GridSize.y; y++)
             {
                 for (int x = 0; x < GridSize.x; x++)
                 {
-                    var gridPiece = PickGridPiece(x, y);
-                    SpawnGridPiece(x, y, gridPiece);
+                    var gridType = PickGridType(x, y);
+                    var gridPiece = SpawnGridPiece(x, y, gridType);
+                    if (startGrid == null) startGrid = gridPiece;
                     yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_SPAWN_DELAY);
                 }
             }
@@ -49,17 +52,17 @@ public class GeneratorManager : Singleton<GeneratorManager>
             yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_START_DURATION);
             OnGenerateDone?.Invoke();
             yield return new WaitForSecondsRealtime(Constants.BOARD_START_DURATION);
-            OnAnimationsDone?.Invoke();
+            OnAnimationsDone?.Invoke(startGrid);
         }
     }
 
-    private GameObject PickGridPiece(int x, int y)
+    private GameObject PickGridType(int x, int y)
     {
-        var islandVarient = GridPiecePrefabs[0];
-        return islandVarient;
+        var gridType = GridPiecePrefabs[0];
+        return gridType;
     }
 
-    private void SpawnGridPiece(int x, int y, GameObject islandPiece)
+    private GridPiece SpawnGridPiece(int x, int y, GameObject islandPiece)
     {
         var spawned = Instantiate(islandPiece, GridPiecesHolder);
 
@@ -69,6 +72,9 @@ public class GeneratorManager : Singleton<GeneratorManager>
         spawned.transform.localPosition = position;
         spawned.transform.localScale = scale;
 
-        _boardManager.GridPieces[y, x] = new GridPiece(spawned, x, y);
+        var gridPiece = new GridPiece(spawned, x, y);
+        _boardManager.GridPieces[y, x] = gridPiece;
+
+        return gridPiece;
     }
 }

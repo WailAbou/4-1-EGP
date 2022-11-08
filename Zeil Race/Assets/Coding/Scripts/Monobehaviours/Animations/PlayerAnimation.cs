@@ -21,11 +21,11 @@ public class PlayerAnimation : MonoBehaviour
         transform.DOScale(_startScale, Constants.PLAYER_START_DURATION);
     }
 
-    private void OnMoveStartAnimation(Transform player, Vector3 target)
+    private void OnMoveStartAnimation(Transform player, Transform target)
     {
         if (player != transform) return;
 
-        transform.DOMove(target, Constants.PLAYER_MOVE_DURATION);
-        transform.DOLookAt(target, Constants.PLAYER_MOVE_DURATION / 2);
+        transform.DOMove(target.position, Constants.PLAYER_MOVE_DURATION);
+        transform.DOLookAt(target.position, Constants.PLAYER_MOVE_DURATION / 2);
     }
 }

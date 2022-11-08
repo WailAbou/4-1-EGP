@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -14,17 +13,16 @@ public class PlayerManager : Singleton<PlayerManager>
     public int PlayerAmount = 3;
 
     public Action<Transform> OnTurnStart;
-    public Action<Transform, Vector3> OnMoveStart;
+    public Action<Transform, Transform> OnMoveStart;
     public Action<Transform> OnMoveEnd;
     public Action<PlayerMechanic[]> OnPlayersSpawned;
 
-    private BoardManager _boardManager;
     private GeneratorManager _generatorManager;
     private UiManager _uiManager;
     private PlayerMechanic _currentPlayer;
     private PlayerMechanic[] _playerMechanics;
     private List<Color> _colors = new List<Color>();
-    private float _offset = 0.1f;
+    private float _offset = 0.3f;
     private int _playerIndex;
     private bool _ableToMove = true;
 
@@ -39,27 +37,25 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         base.Start();
 
-        _boardManager = BoardManager.Instance;
         _uiManager = UiManager.Instance;
         _generatorManager = GeneratorManager.Instance;
 
-        _generatorManager.OnAnimationsDone += () => StartCoroutine(SpawnPlayers());
+        _generatorManager.OnAnimationsDone += (startGrid) => StartCoroutine(SpawnPlayers(startGrid));
     }
 
     public bool CheckTurn(PlayerMechanic playerMechanic) => playerMechanic == _currentPlayer && _ableToMove;
 
-    private IEnumerator SpawnPlayers()
+    private IEnumerator SpawnPlayers(GridPiece startGrid)
     {
         for (int i = 0; i < _playerMechanics.Length; i++)
         {
-            var position = new Vector3(-0.45f + _offset * i, 0.55f, -0.45f);
-            var scale = new Vector3(0.0025f, 0.075f, 0.0025f);
+            var startPos = startGrid.gameObject.transform.position;
+            var position = new Vector3(startPos.x + _offset * i, startPos.y, startPos.z);
 
             var player = Instantiate(PlayerPrefab, PlayersHolder);
             var playerMechanic = player.GetComponent<PlayerMechanic>();
 
-            player.transform.localScale = scale;
-            player.transform.localPosition = position;
+            player.transform.position = position;
             playerMechanic.Sail.material.color = _colors.PickRandom(true);
             _playerMechanics[i] = playerMechanic;
 
@@ -78,22 +74,20 @@ public class PlayerManager : Singleton<PlayerManager>
         OnTurnStart?.Invoke(_currentPlayer.transform);
     }
 
-    public void MakeTurn(Transform player)
+    public void TakeTurn(Transform player, Transform target)
     {
-        StartCoroutine(DoTurn(player));
+        StartCoroutine(TakeTurnRoutine(player, target));
     }
 
-    private IEnumerator DoTurn(Transform player)
+    private IEnumerator TakeTurnRoutine(Transform player, Transform target)
     {
         _ableToMove = false;
-        var target = _boardManager.SelectedPiece.go.transform.position;
-        OnMoveStart?.Invoke(player, target);
 
+        OnMoveStart?.Invoke(player, target);
         yield return new WaitForSecondsRealtime(Constants.PLAYER_MOVE_DURATION + 1.0f);
         NextTurn();
-        yield return new WaitForSecondsRealtime(3.0f);
-        
-        OnMoveEnd?.Invoke(_currentPlayer.gameObject.transform);
+        OnMoveEnd?.Invoke(player);
+
         _ableToMove = true;
     }
 }

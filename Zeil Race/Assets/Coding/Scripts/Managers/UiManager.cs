@@ -15,10 +15,6 @@ public class UiManager : Singleton<UiManager>
     public Action<float> OnAnnouncementEnd;
     public Action OnAnnouncementStop;
 
-    public Action<QuizScriptableObject> OnQuizStart;
-    public Action OnQuizEnd;
-    public Action OnQuizStop;
-
     private BoardManager _boardManager;
     private PlayerManager _playerManager;
 
@@ -31,8 +27,6 @@ public class UiManager : Singleton<UiManager>
 
         _boardManager.OnHoverEnter += DisplayCoordinates;
         _playerManager.OnTurnStart += DisplayArrow;
-        
-        StartQuiz(QuizScriptableObject);
     }
 
     public void StartAnnouncement(string text, float displayDuration, float closeDuration)
@@ -47,23 +41,6 @@ public class UiManager : Singleton<UiManager>
         OnAnnouncementEnd?.Invoke(closeDuration);
         yield return new WaitForSecondsRealtime(closeDuration);
         OnAnnouncementStop?.Invoke();
-    }
-
-    public void StartQuiz(QuizScriptableObject quiz)
-    {
-        OnQuizStart?.Invoke(quiz);
-    }
-
-    public void EndQuiz()
-    {
-        StartCoroutine(StopQuiz());
-    }
-
-    private IEnumerator StopQuiz()
-    {
-        OnQuizEnd?.Invoke();
-        yield return new WaitForSecondsRealtime(Constants.QUIZ_END_DURATION);
-        OnQuizStop?.Invoke();
     }
 
     private void DisplayCoordinates(GridPiece gridPiece)

@@ -9,12 +9,12 @@ public class QuizMechanic : MonoBehaviour
     public Transform AnswersHolder;
     public TMP_Text QuestionDisplay;
 
-    private UiManager _uiManager;
+    private GameManager _gameManager;
 
     public void Start()
     {
-        _uiManager = UiManager.Instance;
-        _uiManager.OnQuizStart += SetQuiz;
+        _gameManager = GameManager.Instance;
+        _gameManager.OnQuizStart += SetQuiz;
     }
 
     private void SetQuiz(QuizScriptableObject quiz)
@@ -30,13 +30,13 @@ public class QuizMechanic : MonoBehaviour
         {
             var answerButton = Instantiate(AnswerPrefab, AnswersHolder);
             answerButton.GetComponentInChildren<TMP_Text>().SetText(answer.Content);
-            answerButton.GetComponentInChildren<Button>().onClick.AddListener(() => CheckAnswer(answer));
+            answerButton.GetComponentInChildren<Button>().onClick.AddListener(() => CheckAnswer(quiz, answer));
         }
     }
 
-    private void CheckAnswer(QuizScriptableObject.Answer answer)
+    private void CheckAnswer(QuizScriptableObject quiz, QuizScriptableObject.Answer answer)
     {
-        if (answer.Correct) Debug.Log("Correct");
-        else Debug.Log("Incorrect");
+        if (answer.Correct) _gameManager.OnQuizCorrect?.Invoke(quiz);
+        else _gameManager.OnQuizIncorrect?.Invoke(quiz);
     }
 }

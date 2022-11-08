@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Extensions
 {
-    public static T PickRandom<T>(this List<T> values, bool unique)
+    public static T PickRandom<T>(this List<T> values, bool unique = false)
     {
         int i = Random.Range(0, values.Count);
         T picked = values[i];

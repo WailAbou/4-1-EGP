@@ -4,7 +4,7 @@ using UnityEngine;
 public class QuizAnimation : MonoBehaviour
 {
     private RectTransform _quizPanel;
-    private UiManager _uiManager;
+    private GameManager _gameManager;
 
     private void Awake()
     {
@@ -13,8 +13,8 @@ public class QuizAnimation : MonoBehaviour
 
     public void Start()
     {
-        _uiManager = UiManager.Instance;
-        _uiManager.OnQuizStart += OnStartAnimation;
+        _gameManager = GameManager.Instance;
+        _gameManager.OnQuizStart += OnStartAnimation;
     }
 
     private void OnStartAnimation(QuizScriptableObject quiz)

@@ -2,17 +2,16 @@ using UnityEngine;
 
 public class GridPiece
 {
-    public GameObject go = null;
-    public Vector2 position = Vector3.zero;
+    public GameObject gameObject;
+    public Vector2 position;
     public IslandType IslandType = IslandType.Water;
-    public bool IsSelected = false;
-    public GridAnimation Anim;
+    public bool IsSelected;
 
-    public GridPiece(GameObject _go, int _x, int _y)
+    public GridPiece(GameObject _gameObject, int _x, int _y)
     {
-        go = _go;
+        gameObject = _gameObject;
         position = new Vector2(_x, _y);
-        Anim = go.GetComponent<GridAnimation>();
+        _gameObject.GetComponent<GridMechanic>().GridPiece = this;
     }
 }
 

@@ -123,6 +123,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &30578565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 30578566}
+  - component: {fileID: 30578567}
+  m_Layer: 0
+  m_Name: Game Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &30578566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30578565}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1015854966}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &30578567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30578565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc1d1606e0e70049b08c02ac458a6cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
+  destroyDuplicate: 0
+  Quizes:
+  - {fileID: 11400000, guid: f6c9d6bf86737d54fadf1afad88b58f7, type: 2}
+  - {fileID: 11400000, guid: aeea7e79becdc76419bbe6cf32e2fd89, type: 2}
+  - {fileID: 11400000, guid: 67f6f8551a2a2f545acf5a98dee253fe, type: 2}
 --- !u!1 &35340861
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,8 +677,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1516143752}
-  m_RootOrder: 0
+  m_Father: {fileID: 1598004289}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &484802913
 GameObject:
@@ -881,7 +931,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1516143752}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
@@ -1219,7 +1269,7 @@ RectTransform:
   - {fileID: 1086443144}
   - {fileID: 1650601864}
   m_Father: {fileID: 1431826635}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1559,6 +1609,7 @@ Transform:
   - {fileID: 1957251778}
   - {fileID: 949956094}
   - {fileID: 1069100029}
+  - {fileID: 30578566}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1744,6 +1795,7 @@ MonoBehaviour:
   destroyDuplicate: 0
   CoordinatesDisplay: {fileID: 35340863}
   QuizScriptableObject: {fileID: 11400000, guid: f6c9d6bf86737d54fadf1afad88b58f7, type: 2}
+  Arrow: {fileID: 1980878248}
 --- !u!1 &1086443143
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,6 +1930,11 @@ Transform:
   m_Father: {fileID: 2139350435}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 45, y: 20, z: 0}
+--- !u!1 &1331175204 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4386843560058455249, guid: f27cc125cc2820446ab2585b74189e8d, type: 3}
+  m_PrefabInstance: {fileID: 1980878247}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1335154491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2105,9 +2162,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1980878248}
   - {fileID: 883935660}
   - {fileID: 1531754346}
-  - {fileID: 1980878248}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2180,10 +2237,9 @@ Transform:
   m_LocalScale: {x: 3, y: 0.1, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 189164202}
   - {fileID: 683720510}
   m_Father: {fileID: 1598004289}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1516143753
 BoxCollider:
@@ -2326,7 +2382,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1431826635}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1543247155
 GameObject:
@@ -2458,6 +2514,7 @@ Transform:
   m_Children:
   - {fileID: 775496044}
   - {fileID: 1543247156}
+  - {fileID: 189164202}
   - {fileID: 1516143752}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -3192,7 +3249,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4386843560058455248, guid: f27cc125cc2820446ab2585b74189e8d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4386843560058455248, guid: f27cc125cc2820446ab2585b74189e8d, type: 3}
       propertyPath: m_LocalScale.x
@@ -3257,6 +3314,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4386843560058455248, guid: f27cc125cc2820446ab2585b74189e8d, type: 3}
   m_PrefabInstance: {fileID: 1980878247}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1980878249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331175204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0d911321e8d544eb6c08f71c7de7d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2006822808
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,13 +31,15 @@ public class GridAnimation : MonoBehaviour
 
     public void HoverEnterAnimation(GridPiece gridPiece)
     {
-        if (gridPiece.Anim == this) 
-            _renderer.material.color = Color.white;
+        if (gridPiece.gameObject != gameObject) return;
+        
+        _renderer.material.color = Color.white;
     }
 
     public void HoverLeaveAnimation(GridPiece gridPiece)
     {
-        if (gridPiece.Anim == this)
-            _renderer.material.color = _startColor;
+        if (gridPiece.gameObject != gameObject) return;
+
+        _renderer.material.color = _startColor;
     }
 }
