@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2841431538607491670}
   - component: {fileID: 7518140239220200520}
   m_Layer: 0
-  m_Name: Grid Piece
+  m_Name: Normal Quiz Piece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

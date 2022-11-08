@@ -1,24 +1,23 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class QuizAnimation : MonoBehaviour
+public class QuizAnimation : MonoBehaviour, IQuizAnimation
 {
     private RectTransform _quizPanel;
-    private GameManager _gameManager;
 
     private void Awake()
     {
         _quizPanel = transform.GetChild(0).GetComponent<RectTransform>();
     }
 
-    public void Start()
+    public void StartQuizAnimation(bool isFinalQuiz, QuizScriptableObject quiz)
     {
-        _gameManager = GameManager.Instance;
-        _gameManager.OnQuizStart += OnStartAnimation;
+        var xPos = isFinalQuiz ? (Screen.width / 2) - (_quizPanel.sizeDelta.x / 2) : 50;
+        _quizPanel.DOAnchorPosX(xPos, Constants.QUIZ_SPAWN_DURATION).SetEase(Ease.InOutQuad);
     }
 
-    private void OnStartAnimation(QuizScriptableObject quiz)
+    public void EndQuizAnimation(bool isFinalQuiz)
     {
-        _quizPanel.DOAnchorPosX(50, Constants.QUIZ_START_DURATION).SetEase(Ease.InOutQuad);
+        _quizPanel.DOAnchorPosX(-650, Constants.QUIZ_END_DURATION).SetEase(Ease.InOutQuad);
     }
 }

@@ -6,28 +6,26 @@ public class GeneratorManager : Singleton<GeneratorManager>
 {
     [Header("GeneratorManager References")]
     public Transform GridPiecesHolder;
+    public GameObject EndGridPiecePrefab;
     public GameObject[] GridPiecePrefabs;
 
     [Header("GeneratorManager Settings")]
     public Vector2Int GridSize = new Vector2Int(10, 10);
 
     public Action OnGenerateDone;
-    public Action<GridPiece> OnAnimationsDone;
+    public Action<GridCell> OnAnimationsDone;
 
-    private BoardManager _boardManager;
     public Vector2 _origin;
     private float _gridWith;
     private float _gridHeight;
+    private bool _endSpawned;
 
-    public override void Start()
+    public override void Setup()
     {
-        base.Start();
-
-        _boardManager = BoardManager.Instance;
         _gridWith = 1.0f / GridSize.x;
         _gridHeight = 1.0f / GridSize.y;
         _origin = new Vector2(-(_gridWith * (GridSize.x / 2)) + (_gridWith / 2), -(_gridHeight * (GridSize.y / 2)) + (_gridHeight / 2));
-        _boardManager.GridPieces = new GridPiece[GridSize.y, GridSize.x];
+        _boardManager.GridCells = new GridCell[GridSize.y, GridSize.x];
 
         StartCoroutine(GenerateMap());
     }
@@ -36,45 +34,50 @@ public class GeneratorManager : Singleton<GeneratorManager>
     {
         if (GridPiecePrefabs?.Length > 0 && GridPiecesHolder)
         {
-            GridPiece startGrid = null;
+            GridCell startGridCell = null;
 
             for(int y = 0; y < GridSize.y; y++)
             {
                 for (int x = 0; x < GridSize.x; x++)
                 {
-                    var gridType = PickGridType(x, y);
-                    var gridPiece = SpawnGridPiece(x, y, gridType);
-                    if (startGrid == null) startGrid = gridPiece;
+                    var gridCellType = GetGridCellType(x, y);
+                    var gridCell = SpawnGridCell(x, y, gridCellType);
+                    if (startGridCell == null) startGridCell = gridCell;
                     yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_SPAWN_DELAY);
                 }
             }
 
-            yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_START_DURATION);
+            yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_SPAWN_DURATION);
             OnGenerateDone?.Invoke();
-            yield return new WaitForSecondsRealtime(Constants.BOARD_START_DURATION);
-            OnAnimationsDone?.Invoke(startGrid);
+            yield return new WaitForSecondsRealtime(Constants.BOARD_SPAWN_DURATION);
+            OnAnimationsDone?.Invoke(startGridCell);
         }
     }
 
-    private GameObject PickGridType(int x, int y)
+    private GameObject GetGridCellType(int x, int y)
     {
-        var gridType = GridPiecePrefabs[0];
-        return gridType;
+        var gridCellPrefab = GridPiecePrefabs[0];
+        if (!_endSpawned && UnityEngine.Random.Range(0.0f, 1.0f) > 0.8f)
+        {
+            gridCellPrefab = EndGridPiecePrefab;
+            _endSpawned = true;
+        }
+        return gridCellPrefab;
     }
 
-    private GridPiece SpawnGridPiece(int x, int y, GameObject islandPiece)
+    private GridCell SpawnGridCell(int x, int y, GameObject gridCellPrefab)
     {
-        var spawned = Instantiate(islandPiece, GridPiecesHolder);
+        var spawnedGridCell = Instantiate(gridCellPrefab, GridPiecesHolder);
 
         var position = new Vector3(_origin.x + (_gridWith * x), 0.55f, _origin.y + (_gridHeight * y));
         var scale = new Vector3(_gridWith, 0.1f, _gridHeight);
 
-        spawned.transform.localPosition = position;
-        spawned.transform.localScale = scale;
+        spawnedGridCell.transform.localPosition = position;
+        spawnedGridCell.transform.localScale = scale;
 
-        var gridPiece = new GridPiece(spawned, x, y);
-        _boardManager.GridPieces[y, x] = gridPiece;
+        var gridCell = new GridCell(spawnedGridCell, x, y);
+        _boardManager.GridCells[y, x] = gridCell;
 
-        return gridPiece;
+        return gridCell;
     }
 }

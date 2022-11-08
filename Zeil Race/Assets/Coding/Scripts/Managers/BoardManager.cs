@@ -5,25 +5,28 @@ public class BoardManager : Singleton<BoardManager>
 {
     [Header("BoardManager References")]
     public BoardAnimation BoardAnimation;
-    public GridPiece[,] GridPieces;
+    public GridCell[,] GridCells;
 
-    public Action<GridPiece> OnSelect;
-    public Action<GridPiece> OnHoverEnter;
-    public Action<GridPiece> OnHoverLeave;
+    [HideInInspector] 
+    public GridCell SelectedGridCell;
+    public Action<GridCell> OnSelect;
+    public Action<GridCell> OnHoverEnter;
+    public Action<GridCell> OnHoverLeave;
 
-    private GridPiece _hoverPiece;
+    private GridCell _hoveredCell;
 
-    public void HoverPiece(GridPiece gridPiece)
+    public void HoverPiece(GridCell gridCell)
     {
-        if (_hoverPiece != null && _hoverPiece != gridPiece)
-            OnHoverLeave?.Invoke(_hoverPiece);
+        if (_hoveredCell != null && _hoveredCell != gridCell)
+            OnHoverLeave?.Invoke(_hoveredCell);
 
-        _hoverPiece = gridPiece;
-        OnHoverEnter?.Invoke(_hoverPiece);
+        _hoveredCell = gridCell;
+        OnHoverEnter?.Invoke(_hoveredCell);
     }
 
-    public void SelectPiece(GridPiece gridPiece)
+    public void SelectPiece(GridCell gridCell)
     {
-        OnSelect?.Invoke(gridPiece);
+        SelectedGridCell = gridCell;
+        OnSelect?.Invoke(gridCell);
     }
 }

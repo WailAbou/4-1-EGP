@@ -11,6 +11,7 @@ public class QuizScriptableObject : ScriptableObject
         public bool Correct;
     }
 
+    public bool IsFinalQuiz;
     public string Question;
     public List<Answer> Answers;
 }

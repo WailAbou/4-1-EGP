@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 30578566}
   - component: {fileID: 30578567}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: Quiz Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,10 +169,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
   destroyDuplicate: 0
-  Quizes:
+  NormalQuizes:
   - {fileID: 11400000, guid: f6c9d6bf86737d54fadf1afad88b58f7, type: 2}
   - {fileID: 11400000, guid: aeea7e79becdc76419bbe6cf32e2fd89, type: 2}
   - {fileID: 11400000, guid: 67f6f8551a2a2f545acf5a98dee253fe, type: 2}
+  FinalQuizes:
+  - {fileID: 11400000, guid: 89290be2270d24740a6b3276754cca27, type: 2}
 --- !u!1 &35340861
 GameObject:
   m_ObjectHideFlags: 0
@@ -1794,7 +1796,6 @@ MonoBehaviour:
   dontDestroyOnLoad: 0
   destroyDuplicate: 0
   CoordinatesDisplay: {fileID: 35340863}
-  QuizScriptableObject: {fileID: 11400000, guid: f6c9d6bf86737d54fadf1afad88b58f7, type: 2}
   Arrow: {fileID: 1980878248}
 --- !u!1 &1086443143
 GameObject:
@@ -1808,7 +1809,7 @@ GameObject:
   - component: {fileID: 1086443146}
   - component: {fileID: 1086443145}
   m_Layer: 5
-  m_Name: Announcement Holder
+  m_Name: Toastr Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2053,9 +2054,11 @@ MonoBehaviour:
   dontDestroyOnLoad: 0
   destroyDuplicate: 0
   GridPiecesHolder: {fileID: 683720510}
+  EndGridPiecePrefab: {fileID: 2456526737769985787, guid: 7b501b6f66783964292ebf8c8bfef6eb, type: 3}
   GridPiecePrefabs:
   - {fileID: 2456526737769985787, guid: b81b66ed8fe6745469ce1c53d620c3cb, type: 3}
   GridSize: {x: 10, y: 10}
+  _origin: {x: 0, y: 0}
 --- !u!1 &1377664460
 GameObject:
   m_ObjectHideFlags: 0
@@ -3070,7 +3073,7 @@ GameObject:
   - component: {fileID: 1925427958}
   - component: {fileID: 1925427957}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Toastr Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3338,7 +3341,7 @@ GameObject:
   - component: {fileID: 2006822811}
   - component: {fileID: 2006822810}
   m_Layer: 5
-  m_Name: Announcement text
+  m_Name: Toastr Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

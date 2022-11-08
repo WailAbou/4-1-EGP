@@ -1,45 +1,31 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class GridAnimation : MonoBehaviour
+public class GridAnimation : MonoBehaviour, IGridAnimation
 {
-    private float _startHeight;
     private Renderer _renderer;
     private Color _startColor;
-    private BoardManager _boardManager;
+    private float _startHeight;
 
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
-    }
-
-    private void Start()
-    {
-        _startHeight = transform.position.y;
         _startColor = _renderer.material.color;
-        _boardManager = BoardManager.Instance;
-
-        _boardManager.OnHoverEnter += HoverEnterAnimation;
-        _boardManager.OnHoverLeave += HoverLeaveAnimation;
-        StartAnimation();
+        _startHeight = transform.position.y;
     }
 
-    private void StartAnimation()
+    public void SpawnAnimation()
     {
-        transform.DOMoveY(_startHeight + 1.0f, 0).OnComplete(() => transform.DOMoveY(_startHeight, Constants.GRIDPIECE_START_DURATION));
+        transform.DOMoveY(_startHeight + 1.0f, 0).OnComplete(() => transform.DOMoveY(_startHeight, Constants.GRIDPIECE_SPAWN_DURATION));
     }
 
-    public void HoverEnterAnimation(GridPiece gridPiece)
+    public void HoverEnterAnimation(GridCell gridCell)
     {
-        if (gridPiece.gameObject != gameObject) return;
-        
         _renderer.material.color = Color.white;
     }
 
-    public void HoverLeaveAnimation(GridPiece gridPiece)
+    public void HoverLeaveAnimation(GridCell gridCell)
     {
-        if (gridPiece.gameObject != gameObject) return;
-
         _renderer.material.color = _startColor;
     }
 }

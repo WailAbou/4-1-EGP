@@ -1,30 +1,17 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class PlayerAnimation : MonoBehaviour
+public class PlayerAnimation : MonoBehaviour, IPlayerAnimation
 {
-    private PlayerManager _playerManager;
-    private Vector3 _startScale;
-
-    private void Start()
+    public void SpawnAnimation()
     {
-        _playerManager = PlayerManager.Instance;
-        _playerManager.OnMoveStart += OnMoveStartAnimation;
-
-        _startScale = transform.localScale;
+        var startScale = transform.localScale;
         transform.localScale = Vector3.zero;
-        StartAnimation();
+        transform.DOScale(startScale, Constants.PLAYER_SPAWN_DURATION);
     }
 
-    public void StartAnimation()
+    public void MoveStartAnimation(Transform player, Transform target)
     {
-        transform.DOScale(_startScale, Constants.PLAYER_START_DURATION);
-    }
-
-    private void OnMoveStartAnimation(Transform player, Transform target)
-    {
-        if (player != transform) return;
-
         transform.DOMove(target.position, Constants.PLAYER_MOVE_DURATION);
         transform.DOLookAt(target.position, Constants.PLAYER_MOVE_DURATION / 2);
     }

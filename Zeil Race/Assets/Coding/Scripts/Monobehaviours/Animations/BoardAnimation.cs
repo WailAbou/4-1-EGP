@@ -1,15 +1,10 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class BoardAnimation : MonoBehaviour
+public class BoardAnimation : MonoBehaviour, IBoardAnimation
 {
-    private void Start()
+    public void SpawnAnimation()
     {
-        GeneratorManager.Instance.OnGenerateDone += StartAnimation;
-    }
-
-    public void StartAnimation()
-    {
-        transform.DOPunchScale(new Vector3(0.25f, 0, 0.25f), Constants.BOARD_START_DURATION);
+        transform.DOPunchScale(new Vector3(0.25f, 0, 0.25f), Constants.BOARD_SPAWN_DURATION);
     }
 }

@@ -1,17 +1,9 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class ArrowAnimation : MonoBehaviour
+public class ArrowAnimation : MonoBehaviour, IArrowAnimation
 {
-    private PlayerManager _playerManager;
-
-    public void Start()
-    {
-        _playerManager = PlayerManager.Instance;
-        _playerManager.OnPlayersSpawned += OnStartAnimation;
-    }
-
-    private void OnStartAnimation(PlayerMechanic[] players)
+    public void MoveAnimation(PlayerLogic[] players)
     {
         transform.DOLocalMoveY(transform.localPosition.y - 15f, Constants.ARROW_MOVE_DURATION).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
     }    

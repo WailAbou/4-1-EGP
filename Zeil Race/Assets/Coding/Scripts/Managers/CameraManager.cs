@@ -8,15 +8,11 @@ public class CameraManager : Singleton<CameraManager>
     public List<CinemachineVirtualCamera> Cams;
     public CinemachineVirtualCamera FollowCam;
 
-    private PlayerManager _playerManager;
     private CinemachineVirtualCamera _camCurrent;
     private int _camIndex;
 
-    public override void Start()
+    public override void Setup()
     {
-        base.Start();
-
-        _playerManager = PlayerManager.Instance;
         if (FollowCam)
         {
             _playerManager.OnPlayersSpawned += SetFollowCam;
@@ -30,7 +26,7 @@ public class CameraManager : Singleton<CameraManager>
             SwitchCams();
     }
 
-    private void SetFollowCam(PlayerMechanic[] players)
+    private void SetFollowCam(PlayerLogic[] players)
     {
         Cams.Add(FollowCam);
         SetFollowTarget(players[0].transform);
