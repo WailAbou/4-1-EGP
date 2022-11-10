@@ -14,7 +14,7 @@ public class CameraManager : Singleton<CameraManager>
     public override void Setup()
     {
         _playerManager.OnPlayersSpawned += SetFollowCam;
-        _playerManager.OnMoveEnd += SetFollowTarget;
+        _playerManager.OnTurnStart += SetFollowTarget;
     }
 
     private void Update()
@@ -26,10 +26,10 @@ public class CameraManager : Singleton<CameraManager>
     private void SetFollowCam(PlayerLogic[] players)
     {
         Cams.Add(FollowCam);
-        SetFollowTarget(players[0].transform);
+        SetFollowTarget(players[0].transform, Vector2Int.zero);
     }
 
-    private void SetFollowTarget(Transform player)
+    private void SetFollowTarget(Transform player, Vector2Int gridPosition)
     {
         FollowCam.Follow = player.transform;
         FollowCam.LookAt = player.transform;

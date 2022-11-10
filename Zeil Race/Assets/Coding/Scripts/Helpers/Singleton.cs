@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     [Header("Singleton Settings")]
-    public bool dontDestroyOnLoad;
-    public bool destroyDuplicate;
+    public bool OnLoadDontDestroy;
+    public bool DuplicatesDestroy;
 
-    public static T Instance => instance;
-    private static T instance;
+    public static T Instance => _instance;
+    private static T _instance;
 
     protected CameraManager _cameraManager;
     protected GeneratorManager _generatorManager;
@@ -21,14 +21,14 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     public virtual void Awake()
     {
-        instance = gameObject.GetComponent<T>();
-        if (dontDestroyOnLoad) DontDestroyOnLoad(gameObject);
+        _instance = gameObject.GetComponent<T>();
+        if (OnLoadDontDestroy) DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     public virtual void Start()
     {
-        if (destroyDuplicate && Instance != this) Destroy(gameObject);
+        if (DuplicatesDestroy && Instance != this) Destroy(gameObject);
 
         _cameraManager = CameraManager.Instance;
         _generatorManager = GeneratorManager.Instance;
@@ -41,13 +41,15 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
         Setup();
     }
+    public virtual void Setup() { }
 
     public virtual void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (destroyDuplicate && Instance != this) Destroy(gameObject);
+        if (DuplicatesDestroy && Instance != this) Destroy(gameObject);
     }
 
-    public virtual void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
-
-    public virtual void Setup() { }
+    public virtual void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 }

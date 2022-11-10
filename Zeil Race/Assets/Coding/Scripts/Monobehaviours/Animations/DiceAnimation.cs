@@ -8,7 +8,7 @@ public class DiceAnimation : MonoBehaviour, IDiceAnimation
     private List<RectTransform> _dicePanels = new List<RectTransform>();
     private List<TMP_Text> _diceDisplays = new List<TMP_Text>();
     private List<Sequence> _diceSequences = new List<Sequence>();
-    private int _counter;
+    private int _counter = -1;
 
     private void Awake()
     {
@@ -36,8 +36,8 @@ public class DiceAnimation : MonoBehaviour, IDiceAnimation
 
     private void SetDiceDisplay(TMP_Text diceDisplay, int x)
     {
-        diceDisplay.SetText(_counter.ToString());
         _counter = x + 1;
+        diceDisplay.SetText(_counter.ToString());
     }
 
     public int MoveStopAnimation(int diceIndex)

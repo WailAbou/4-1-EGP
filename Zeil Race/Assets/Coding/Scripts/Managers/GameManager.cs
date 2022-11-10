@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
 
     public override void Setup()
     {
-        _gridManager.OnSelect += TakeTurn;
+        _gridManager.OnSelectGridCell += TakeTurn;
         _quizManager.OnQuizCorrect += CorrectAnswer;
         _quizManager.OnQuizIncorrect += IncorrectAnswer;
     }

@@ -16,7 +16,7 @@ public class DiceLogic : BaseLogic<IDiceAnimation>
     protected override void SetupAnimation()
     {
         _diceManager.OnStartDiceRolls += _animation.MoveStartAnimation;
-        _gridManager.OnSelect += _animation.MoveEndAnimation;
+        _gridManager.OnSelectGridCell += _animation.MoveEndAnimation;
     }
 
     private void Update()

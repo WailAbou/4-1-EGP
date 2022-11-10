@@ -3,29 +3,23 @@ using System;
 public class GridManager : Singleton<GridManager>
 {
     public GridCell[,] GridCells;
-    public Action<GridCell> OnSelect;
-    public Action<GridCell> OnHoverEnter;
-    public Action<GridCell> OnHoverLeave;
+    public Action<GridCell> OnSelectGridCell;
+    public Action<GridCell> OnHoverEnterGridCell;
+    public Action<GridCell> OnHoverLeaveGridCell;
 
     private GridCell _hoveredCell;
 
     public void HoverGridCell(GridCell gridCell)
     {
-        DeHoverGridCell(gridCell);
-        if (gridCell == null) return;
+        if (_hoveredCell != null && _hoveredCell != gridCell)
+            OnHoverLeaveGridCell?.Invoke(_hoveredCell);
 
         _hoveredCell = gridCell;
-        OnHoverEnter?.Invoke(_hoveredCell);
-    }
-
-    private void DeHoverGridCell(GridCell gridCell)
-    {
-        if (_hoveredCell != null && _hoveredCell != gridCell)
-            OnHoverLeave?.Invoke(_hoveredCell);
+        OnHoverEnterGridCell?.Invoke(_hoveredCell);
     }
 
     public void SelectGridCell(GridCell gridCell)
     {
-        OnSelect?.Invoke(gridCell);
+        OnSelectGridCell?.Invoke(gridCell);
     }
 }

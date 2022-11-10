@@ -9,46 +9,37 @@ public class GridLogic : BaseLogic<IGridAnimation>
 
     private Vector2 _playerPosition;
     private Vector2 _range;
-    private bool _interactable;
+    private bool _playerAbleToMove;
+    private bool _interactable => _playerAbleToMove && InRange(GridCell.position);
 
     protected override void SetupLogic()
     {
         _playerManager.OnTurnStart += (_, playerPosition) => _playerPosition = playerPosition;
-        _diceManager.OnEndDiceRolls += rolls => { _interactable = true; _range = rolls; };
-        _gridManager.OnSelect += _ => _interactable = false;
+        _diceManager.OnEndDiceRolls += rolls => { _playerAbleToMove = true; _range = rolls; };
+        _gridManager.OnSelectGridCell += _ => _playerAbleToMove = false;
     }
 
     protected override void SetupAnimation()
     {
-        _gridManager.OnHoverEnter += HoverEnter;
-        _gridManager.OnHoverLeave += HoverLeave;
         _animation.SpawnAnimation();
-    }
-
-    private void HoverEnter(GridCell gridCell)
-    {
-        if (gridCell.gameObject != gameObject) return;
-
-        _animation.HoverEnterAnimation(gridCell);
-    }
-
-    private void HoverLeave(GridCell gridCell)
-    {
-        if (gridCell.gameObject != gameObject) return;
-
-        _animation.HoverLeaveAnimation(gridCell);
     }
 
     private void OnMouseEnter()
     {
-        if (!_interactable || !InRange(GridCell.position)) return;
+        if (!_interactable) return;
 
+        _animation.HoverEnterAnimation(GridCell);
         _gridManager.HoverGridCell(GridCell);
+    }
+
+    private void OnMouseExit()
+    {
+        _animation.HoverLeaveAnimation(GridCell);
     }
 
     private void OnMouseDown()
     {
-        if (!_interactable || !InRange(GridCell.position)) return;
+        if (!_interactable) return;
 
         _gridManager.SelectGridCell(GridCell);
     }

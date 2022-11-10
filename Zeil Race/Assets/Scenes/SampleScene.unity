@@ -167,14 +167,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cc1d1606e0e70049b08c02ac458a6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  destroyDuplicate: 0
+  OnLoadDontDestroy: 0
+  DuplicatesDestroy: 0
   NormalQuizes:
   - {fileID: 11400000, guid: f6c9d6bf86737d54fadf1afad88b58f7, type: 2}
   - {fileID: 11400000, guid: aeea7e79becdc76419bbe6cf32e2fd89, type: 2}
   - {fileID: 11400000, guid: 67f6f8551a2a2f545acf5a98dee253fe, type: 2}
   FinalQuizes:
   - {fileID: 11400000, guid: 89290be2270d24740a6b3276754cca27, type: 2}
+  - {fileID: 11400000, guid: b428bd25fa419d14585fb93d613a27f1, type: 2}
+  - {fileID: 11400000, guid: 6e5cafe7cc2957745bbbf65ad62df704, type: 2}
 --- !u!1 &35340861
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,8 +795,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1f3349b3eb28748a6f3a8a89ab942f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  destroyDuplicate: 0
+  OnLoadDontDestroy: 0
+  DuplicatesDestroy: 0
 --- !u!1 &189164201
 GameObject:
   m_ObjectHideFlags: 0
@@ -1352,8 +1354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8683fecd84d5bfe4aa976e1f48263ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  destroyDuplicate: 0
+  OnLoadDontDestroy: 0
+  DuplicatesDestroy: 0
 --- !u!1 &791936911
 GameObject:
   m_ObjectHideFlags: 0
@@ -1683,8 +1685,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04cbd728fd37a0747972f17bbfc28e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  destroyDuplicate: 0
+  OnLoadDontDestroy: 0
+  DuplicatesDestroy: 0
   PlayersHolder: {fileID: 189164202}
   PlayerPrefab: {fileID: 4950863676373783959, guid: a71c16ce07beec945b5163e23c809621, type: 3}
   PlayerAmount: 3
@@ -2121,8 +2123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119ddb83e962a134ea397c7c5062b062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  destroyDuplicate: 0
+  OnLoadDontDestroy: 0
+  DuplicatesDestroy: 0
   CoordinatesDisplay: {fileID: 35340863}
 --- !u!1 &1086443143
 GameObject:
@@ -2509,8 +2511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b701aecf4c6ca2e41a20c2021d658d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  destroyDuplicate: 0
+  OnLoadDontDestroy: 0
+  DuplicatesDestroy: 0
   GridPiecesHolder: {fileID: 683720510}
   EndGridPiecePrefab: {fileID: 2456526737769985787, guid: 7b501b6f66783964292ebf8c8bfef6eb, type: 3}
   GridPiecePrefabs:
@@ -3381,8 +3383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 156f1a57eab3c104fa0564fef4522ac5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  destroyDuplicate: 0
+  OnLoadDontDestroy: 0
+  DuplicatesDestroy: 0
   Cams:
   - {fileID: 1335154492}
   - {fileID: 1191832326}
@@ -3931,8 +3933,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 902ca01cdfd736f42bffcca46f738290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  destroyDuplicate: 0
+  OnLoadDontDestroy: 0
+  DuplicatesDestroy: 0
 --- !u!1 &1971941702
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Final Quiz 1
   m_EditorClassIdentifier: 
   QuestionType: 2
-  Question: Voer de coordinaten x, y in en zoek de plek op.
+  Question: "Voer de coordinaten 52.1326\xB0 N, 5.2913\xB0 E in op google maps en
+    zoek antwoord met het juiste land."
   Answers:
   - Content: Nederland
     Correct: 1
-  - Content: Utrecht
+  - Content: Belgie
+    Correct: 0
+  - Content: Duitsland
     Correct: 0

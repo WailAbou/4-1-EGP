@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Quiz 3
   m_EditorClassIdentifier: 
   QuestionType: 1
-  Question: Wat is 2 x 2?
+  Question: Wat is 5 / 5?
   Answers:
-  - Content: 4
+  - Content: 5
+    Correct: 0
+  - Content: 1
     Correct: 1
-  - Content: 3
+  - Content: 0
     Correct: 0

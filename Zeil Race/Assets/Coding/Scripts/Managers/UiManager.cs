@@ -13,7 +13,7 @@ public class UiManager : Singleton<UiManager>
 
     public override void Setup()
     {
-        _gridManager.OnHoverEnter += DisplayCoordinates;
+        _gridManager.OnHoverEnterGridCell += DisplayCoordinates;
         _quizManager.OnQuizCorrect += DisplayEndScreen;
     }
 
@@ -25,13 +25,13 @@ public class UiManager : Singleton<UiManager>
     private IEnumerator StartToastrRoutine(string text)
     {
         OnStartToastr?.Invoke(text);
-        yield return new WaitForSecondsRealtime(Constants.TOASTR_MOVE_DURATION);
+        yield return new WaitForSecondsRealtime(Constants.TOASTR_SPAWN_DURATION + Constants.TOASTR_MOVE_DURATION);
         OnEndToastr?.Invoke();
     }
 
     private void DisplayCoordinates(GridCell gridCell)
     {
-        CoordinatesDisplay.SetText($"Coordinaten: ({gridCell.position.x} , {gridCell.position.y})");
+        CoordinatesDisplay.SetText($"Coordinaten: ({gridCell?.position.x} , {gridCell?.position.y})");
     }
 
     private void DisplayEndScreen(Quiz quiz)
