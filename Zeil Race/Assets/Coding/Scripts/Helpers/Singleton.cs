@@ -12,11 +12,12 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected CameraManager _cameraManager;
     protected GeneratorManager _generatorManager;
-    protected BoardManager _boardManager;
+    protected GridManager _gridManager;
     protected PlayerManager _playerManager;
     protected UiManager _uiManager;
     protected QuizManager _quizManager;
     protected DiceManager _diceManager;
+    protected GameManager _gameManager;
 
     public virtual void Awake()
     {
@@ -31,11 +32,12 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
         _cameraManager = CameraManager.Instance;
         _generatorManager = GeneratorManager.Instance;
-        _boardManager = BoardManager.Instance;
+        _gridManager = GridManager.Instance;
         _playerManager = PlayerManager.Instance;
         _uiManager = UiManager.Instance;
         _quizManager = QuizManager.Instance;
         _diceManager = DiceManager.Instance;
+        _gameManager = GameManager.Instance;
 
         Setup();
     }

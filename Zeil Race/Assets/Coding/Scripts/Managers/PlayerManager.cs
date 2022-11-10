@@ -12,7 +12,7 @@ public class PlayerManager : Singleton<PlayerManager>
     [Header("PlayerManager Settings")]
     public int PlayerAmount = 3;
 
-    public Action<Transform> OnTurnStart;
+    public Action<Transform, Vector2Int> OnTurnStart;
     public Action<Transform, Transform> OnMoveStart;
     public Action<Transform> OnMoveEnd;
     public Action<PlayerLogic[]> OnPlayersSpawned;
@@ -22,7 +22,6 @@ public class PlayerManager : Singleton<PlayerManager>
     private List<Color> _colors = new List<Color>();
     private float _offset = 0.3f;
     private int _playerIndex;
-    private bool _ableToMove = true;
 
     public override void Setup()
     {
@@ -55,28 +54,30 @@ public class PlayerManager : Singleton<PlayerManager>
     public void NextTurn()
     {
         _currentPlayer = _players[_playerIndex];
-        _uiManager.StartToastr($"Player {_playerIndex + 1} turn!");
+        _uiManager.StartToastr($"Speler {_playerIndex + 1} beurt!");
         _playerIndex = (_playerIndex + 1) % PlayerAmount;
-        OnTurnStart?.Invoke(_currentPlayer.transform);
+        Vector2Int gridPosition = ClosestGridCell(_currentPlayer.transform);
+        OnTurnStart?.Invoke(_currentPlayer.transform, gridPosition);
+    }
+
+    private Vector2Int ClosestGridCell(Transform player)
+    {
+        int x = Mathf.RoundToInt((player.position.x + 1.35f) * 3);
+        int y = Mathf.RoundToInt((player.position.z + 1.35f) * 3);
+        return new Vector2Int(x, y);
     }
 
     public void TakeTurn(Transform target)
     {
-        if (!_ableToMove) return;
-
         var player = _currentPlayer.transform;
         StartCoroutine(TakeTurnRoutine(player, target));
     }
 
     private IEnumerator TakeTurnRoutine(Transform player, Transform target)
     {
-        _ableToMove = false;
-
         OnMoveStart?.Invoke(player, target);
         yield return new WaitForSecondsRealtime(Constants.PLAYER_MOVE_DURATION + 1.0f);
         NextTurn();
         OnMoveEnd?.Invoke(_currentPlayer.transform);
-
-        _ableToMove = true;
     }
 }

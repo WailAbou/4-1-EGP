@@ -7,15 +7,14 @@ public class UiManager : Singleton<UiManager>
 {
     [Header("UiManager References")]
     public TMP_Text CoordinatesDisplay;
-    public Transform Arrow;
 
     public Action<string> OnStartToastr;
     public Action OnEndToastr;
 
     public override void Setup()
     {
-        _boardManager.OnHoverEnter += DisplayCoordinates;
-        _playerManager.OnTurnStart += DisplayArrow;
+        _gridManager.OnHoverEnter += DisplayCoordinates;
+        _quizManager.OnQuizCorrect += DisplayEndScreen;
     }
 
     public void StartToastr(string text)
@@ -35,9 +34,10 @@ public class UiManager : Singleton<UiManager>
         CoordinatesDisplay.SetText($"Coordinaten: ({gridCell.position.x} , {gridCell.position.y})");
     }
 
-    private void DisplayArrow(Transform player)
+    private void DisplayEndScreen(Quiz quiz)
     {
-        Arrow.position = player.position + Vector3.up / 2;
-        Arrow.parent = player;
+        if (quiz.QuestionType != QuestionType.Final) return;
+
+        StartToastr("Game Compleet!");
     }
 }

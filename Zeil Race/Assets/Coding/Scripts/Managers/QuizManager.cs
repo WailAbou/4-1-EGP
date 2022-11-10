@@ -10,15 +10,13 @@ public class QuizManager : Singleton<QuizManager>
 
     public Action<Quiz> OnQuizStart;
     public Action<Quiz> OnQuizEnd;
-    public Action<Transform> OnQuizCorrect;
-    public Action OnQuizIncorrect;
+    public Action<Quiz> OnQuizCorrect;
+    public Action<Quiz> OnQuizIncorrect;
 
-    private Transform _target;
     private Quiz _quiz;
 
-    public void StartQuiz(QuestionType questionType, Transform target)
+    public void StartQuiz(QuestionType questionType)
     {
-        _target = target;
         _quiz = questionType == QuestionType.Final ? FinalQuizes.PickRandom() : NormalQuizes.PickRandom();
         OnQuizStart?.Invoke(_quiz);
     }
@@ -30,11 +28,11 @@ public class QuizManager : Singleton<QuizManager>
 
     public void CorrectAnswer()
     {
-        OnQuizCorrect?.Invoke(_target);
+        OnQuizCorrect?.Invoke(_quiz);
     }
 
     public void IncorrectAnswer()
     {
-        OnQuizIncorrect?.Invoke();
+        OnQuizIncorrect?.Invoke(_quiz);
     }
 }

@@ -13,11 +13,8 @@ public class CameraManager : Singleton<CameraManager>
 
     public override void Setup()
     {
-        if (FollowCam)
-        {
-            _playerManager.OnPlayersSpawned += SetFollowCam;
-            _playerManager.OnMoveEnd += SetFollowTarget;
-        }
+        _playerManager.OnPlayersSpawned += SetFollowCam;
+        _playerManager.OnMoveEnd += SetFollowTarget;
     }
 
     private void Update()
@@ -40,12 +37,9 @@ public class CameraManager : Singleton<CameraManager>
 
     public void SwitchCams()
     {
-        if (Cams?.Count > 1)
-        {
-            if (_camCurrent) _camCurrent.Priority = 10;
-            _camCurrent = Cams[_camIndex];
-            _camCurrent.Priority = 11;
-            _camIndex = (_camIndex + 1) % Cams.Count;
-        }
+        if (_camCurrent) _camCurrent.Priority = 10;
+        _camCurrent = Cams[_camIndex];
+        _camCurrent.Priority = 11;
+        _camIndex = (_camIndex + 1) % Cams.Count;
     }
 }

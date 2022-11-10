@@ -4,7 +4,7 @@ public abstract class BaseLogic<T> : MonoBehaviour
 {
     protected CameraManager _cameraManager;
     protected GeneratorManager _generatorManager;
-    protected BoardManager _boardManager;
+    protected GridManager _gridManager;
     protected PlayerManager _playerManager;
     protected UiManager _uiManager;
     protected QuizManager _quizManager;
@@ -16,7 +16,7 @@ public abstract class BaseLogic<T> : MonoBehaviour
     {
         _cameraManager = CameraManager.Instance;
         _generatorManager = GeneratorManager.Instance;
-        _boardManager = BoardManager.Instance;
+        _gridManager = GridManager.Instance;
         _playerManager = PlayerManager.Instance;
         _uiManager = UiManager.Instance;
         _quizManager = QuizManager.Instance;

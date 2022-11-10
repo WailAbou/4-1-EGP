@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4098288385193798415}
   - component: {fileID: 6931928233174568937}
   - component: {fileID: 1675453634518972131}
-  - component: {fileID: 9050819026575662113}
   m_Layer: 0
   m_Name: SailingShip2SmallDetails
   m_TagString: Untagged
@@ -86,20 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &9050819026575662113
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1655886389562172996}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1903956598148410447, guid: 65cd853c86ec93948b4f547eac80d602, type: 3}
 --- !u!1 &2485570688211155206
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,7 +179,6 @@ GameObject:
   - component: {fileID: 881794877817627336}
   - component: {fileID: 1135684155133276105}
   - component: {fileID: 2314088316241717447}
-  - component: {fileID: 3808961680227384532}
   m_Layer: 0
   m_Name: SailingShip2Hull
   m_TagString: Untagged
@@ -270,20 +254,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3808961680227384532
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4256499359221387951}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6254091515479266650, guid: 65cd853c86ec93948b4f547eac80d602, type: 3}
 --- !u!1 &4798320290561194489
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +265,6 @@ GameObject:
   - component: {fileID: 8772161275578545220}
   - component: {fileID: 9207522806858478204}
   - component: {fileID: 7189943249867603646}
-  - component: {fileID: 4612044741784342137}
   m_Layer: 0
   m_Name: SailingShip2Sails
   m_TagString: Untagged
@@ -368,20 +337,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4612044741784342137
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4798320290561194489}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3360084347434655356, guid: 65cd853c86ec93948b4f547eac80d602, type: 3}
 --- !u!1 &4950863676373783959
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,7 +26,7 @@ public class GeneratorManager : Singleton<GeneratorManager>
         _gridWith = 1.0f / GridSize.x;
         _gridHeight = 1.0f / GridSize.y;
         _origin = new Vector2(-(_gridWith * (GridSize.x / 2)) + (_gridWith / 2), -(_gridHeight * (GridSize.y / 2)) + (_gridHeight / 2));
-        _boardManager.GridCells = new GridCell[GridSize.y, GridSize.x];
+        _gridManager.GridCells = new GridCell[GridSize.y, GridSize.x];
 
         StartCoroutine(GenerateMap());
     }
@@ -38,13 +38,13 @@ public class GeneratorManager : Singleton<GeneratorManager>
             GridCell startGridCell = null;
             var finalX = Random.Range((int)Math.Ceiling(GridSize.x * 0.75f), GridSize.x);
             var finalY = Random.Range((int)Math.Ceiling(GridSize.y * 0.75f), GridSize.y);
-
+            
             for (int y = 0; y < GridSize.y; y++)
             {
                 for (int x = 0; x < GridSize.x; x++)
                 {
-                    var gridCellType = (x == finalX && y == finalY) ? EndGridPiecePrefab : GetGridCellType(x, y);
-                    var gridCell = SpawnGridCell(x, y, gridCellType);
+                    var gridCellPrefab= (x == finalX && y == finalY) ? EndGridPiecePrefab : GetGridCellPrefab(x, y);
+                    var gridCell = SpawnGridCell(x, y, gridCellPrefab);
                     if (startGridCell == null) startGridCell = gridCell;
                     yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_SPAWN_DELAY);
                 }
@@ -57,9 +57,10 @@ public class GeneratorManager : Singleton<GeneratorManager>
         }
     }
 
-    private GameObject GetGridCellType(int x, int y)
+    private GameObject GetGridCellPrefab(int x, int y)
     {
-        var gridCellPrefab = GridPiecePrefabs.PickRandom();
+        var islandChance = Random.Range(0, x + y);
+        var gridCellPrefab = islandChance > 2 ? GridPiecePrefabs[1] : GridPiecePrefabs[0];
         return gridCellPrefab;
     }
 
@@ -74,7 +75,7 @@ public class GeneratorManager : Singleton<GeneratorManager>
         spawnedGridCell.transform.localScale = scale;
 
         var gridCell = new GridCell(spawnedGridCell, x, y);
-        _boardManager.GridCells[y, x] = gridCell;
+        _gridManager.GridCells[y, x] = gridCell;
 
         return gridCell;
     }

@@ -2,31 +2,33 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    private GridCell _gridCell;
+    private Transform _target;
+
     public override void Setup()
     {
-        _boardManager.OnSelect += TakeTurn;
+        _gridManager.OnSelect += TakeTurn;
         _quizManager.OnQuizCorrect += CorrectAnswer;
         _quizManager.OnQuizIncorrect += IncorrectAnswer;
     }
 
     public void TakeTurn(GridCell gridCell)
     {
-        var target = gridCell.gameObject.transform;
+        _gridCell = gridCell;
+        _target = _gridCell.gameObject.transform;
 
-        if (gridCell.QuestionType == QuestionType.None) _playerManager.TakeTurn(target); 
-        else _quizManager.StartQuiz(gridCell.QuestionType, target);
+        if (_gridCell.QuestionType == QuestionType.None) _playerManager.TakeTurn(_target);
+        else _quizManager.StartQuiz(_gridCell.QuestionType);
     }
 
-    private void CorrectAnswer(Transform target)
+    private void CorrectAnswer(Quiz quiz)
     {
-        Debug.Log("Correct!");
         _quizManager.EndQuiz();
-        _playerManager.TakeTurn(target);
+        _playerManager.TakeTurn(_target);
     }
 
-    private void IncorrectAnswer()
+    private void IncorrectAnswer(Quiz quiz)
     {
-        Debug.Log("Incorrect!");
         _quizManager.EndQuiz();
         _playerManager.NextTurn();
     }

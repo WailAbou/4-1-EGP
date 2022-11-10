@@ -7,20 +7,21 @@ public class GridLogic : BaseLogic<IGridAnimation>
     public GridCell GridCell;
     public QuestionType QuestionType;
 
-    private bool _gameStarted;
-    private bool _quizStarted;
+    private Vector2 _playerPosition;
+    private Vector2 _range;
+    private bool _interactable;
 
     protected override void SetupLogic()
     {
-        _playerManager.OnPlayersSpawned += _ => _gameStarted = true;
-        _quizManager.OnQuizStart += _ => _quizStarted = true;
-        _quizManager.OnQuizEnd += _ => _quizStarted = false;
+        _playerManager.OnTurnStart += (_, playerPosition) => _playerPosition = playerPosition;
+        _diceManager.OnEndDiceRolls += rolls => { _interactable = true; _range = rolls; };
+        _gridManager.OnSelect += _ => _interactable = false;
     }
 
     protected override void SetupAnimation()
     {
-        _boardManager.OnHoverEnter += HoverEnter;
-        _boardManager.OnHoverLeave += HoverLeave;
+        _gridManager.OnHoverEnter += HoverEnter;
+        _gridManager.OnHoverLeave += HoverLeave;
         _animation.SpawnAnimation();
     }
 
@@ -40,16 +41,23 @@ public class GridLogic : BaseLogic<IGridAnimation>
 
     private void OnMouseEnter()
     {
-        if (!_gameStarted || _quizStarted) return;
-        
-        _boardManager.HoverPiece(GridCell);
+        if (!_interactable || !InRange(GridCell.position)) return;
+
+        _gridManager.HoverGridCell(GridCell);
     }
 
     private void OnMouseDown()
     {
-        if (!_gameStarted || _quizStarted) return;
+        if (!_interactable || !InRange(GridCell.position)) return;
 
-        _boardManager.SelectPiece(GridCell);
+        _gridManager.SelectGridCell(GridCell);
+    }
+
+    private bool InRange(Vector2 gridPosition)
+    {
+        bool xInRange = gridPosition.x < _playerPosition.x + _range.x && gridPosition.x > _playerPosition.x - _range.x;
+        bool yInRange = gridPosition.y < _playerPosition.y + _range.y && gridPosition.y > _playerPosition.y - _range.y;
+        return xInRange && yInRange;
     }
 }
 
