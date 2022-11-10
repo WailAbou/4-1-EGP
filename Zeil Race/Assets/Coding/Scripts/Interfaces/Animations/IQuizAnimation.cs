@@ -1,5 +1,5 @@
 public interface IQuizAnimation
 {
-    public void StartQuizAnimation(bool isFinalQuiz, QuizScriptableObject quiz);
-    public void EndQuizAnimation(bool isFinalQuiz);
+    public void StartQuizAnimation(Quiz quiz);
+    public void EndQuizAnimation(Quiz quiz);
 }

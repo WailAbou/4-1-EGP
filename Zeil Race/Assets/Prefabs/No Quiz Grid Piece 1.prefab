@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2841431538607491670}
   - component: {fileID: 7518140239220200520}
   m_Layer: 0
-  m_Name: Final Quiz Piece 1
+  m_Name: No Quiz Grid Piece 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0256d7ea0e9de0e43aa875c13d61b2a5, type: 2}
+  - {fileID: 2100000, guid: 94ebded9419247d479c0c3f1446a4810, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -208,8 +208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6bb23c05c379e4390c692fdd20f385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HasQuestion: 1
-  IsFinalQuestion: 1
+  HasQuestion: 0
+  IsFinalQuestion: 0
 --- !u!1 &8280250259356024966
 GameObject:
   m_ObjectHideFlags: 0

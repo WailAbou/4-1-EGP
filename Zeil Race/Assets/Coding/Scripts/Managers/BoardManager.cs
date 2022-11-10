@@ -8,7 +8,6 @@ public class BoardManager : Singleton<BoardManager>
     public GridCell[,] GridCells;
 
     [HideInInspector] 
-    public GridCell SelectedGridCell;
     public Action<GridCell> OnSelect;
     public Action<GridCell> OnHoverEnter;
     public Action<GridCell> OnHoverLeave;
@@ -26,7 +25,6 @@ public class BoardManager : Singleton<BoardManager>
 
     public void SelectPiece(GridCell gridCell)
     {
-        SelectedGridCell = gridCell;
         OnSelect?.Invoke(gridCell);
     }
 }

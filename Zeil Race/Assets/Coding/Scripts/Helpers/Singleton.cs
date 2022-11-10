@@ -16,6 +16,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     protected PlayerManager _playerManager;
     protected UiManager _uiManager;
     protected QuizManager _quizManager;
+    protected DiceManager _diceManager;
 
     public virtual void Awake()
     {
@@ -34,6 +35,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         _playerManager = PlayerManager.Instance;
         _uiManager = UiManager.Instance;
         _quizManager = QuizManager.Instance;
+        _diceManager = DiceManager.Instance;
 
         Setup();
     }

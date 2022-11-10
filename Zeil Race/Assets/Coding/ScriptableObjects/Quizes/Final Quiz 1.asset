@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e209eaf643a34643b5a1f915316c7c0, type: 3}
   m_Name: Final Quiz 1
   m_EditorClassIdentifier: 
-  IsFinalQuiz: 1
+  QuestionType: 2
   Question: Voer de coordinaten x, y in en zoek de plek op.
   Answers:
   - Content: Nederland

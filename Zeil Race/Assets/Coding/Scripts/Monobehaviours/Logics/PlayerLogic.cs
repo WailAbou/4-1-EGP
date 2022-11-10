@@ -11,10 +11,10 @@ public class PlayerLogic : BaseLogic<IPlayerAnimation>
         _animation.SpawnAnimation();
     }
 
-    private void MoveStart(Transform player, Transform targert)
+    private void MoveStart(Transform player, Transform target)
     {
         if (player != transform) return;
 
-        _animation.MoveStartAnimation(player, targert);
+        _animation.MoveStartAnimation(player, target);
     }
 }

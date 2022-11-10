@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
-    [Header("GameManager References")]
+    [Header("PlayerManager References")]
     public Transform PlayersHolder;
     public GameObject PlayerPrefab;
 
@@ -60,12 +60,11 @@ public class PlayerManager : Singleton<PlayerManager>
         OnTurnStart?.Invoke(_currentPlayer.transform);
     }
 
-    public void TakeTurn()
+    public void TakeTurn(Transform target)
     {
         if (!_ableToMove) return;
 
         var player = _currentPlayer.transform;
-        var target = _boardManager.SelectedGridCell.gameObject.transform;
         StartCoroutine(TakeTurnRoutine(player, target));
     }
 

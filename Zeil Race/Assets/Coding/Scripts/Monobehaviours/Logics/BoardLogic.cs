@@ -5,6 +5,6 @@ public class BoardLogic : BaseLogic<IBoardAnimation>
 {
     protected override void SetupAnimation()
     {
-        GeneratorManager.Instance.OnGenerateDone += _animation.SpawnAnimation;
+        _generatorManager.OnGenerateDone += _animation.SpawnAnimation;
     }
 }

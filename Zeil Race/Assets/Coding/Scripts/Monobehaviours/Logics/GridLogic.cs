@@ -5,8 +5,7 @@ public class GridLogic : BaseLogic<IGridAnimation>
 {
     [HideInInspector]
     public GridCell GridCell;
-    public bool HasQuestion;
-    public bool IsFinalQuestion;
+    public QuestionType QuestionType;
 
     private bool _gameStarted;
     private bool _quizStarted;
@@ -14,7 +13,7 @@ public class GridLogic : BaseLogic<IGridAnimation>
     protected override void SetupLogic()
     {
         _playerManager.OnPlayersSpawned += _ => _gameStarted = true;
-        _quizManager.OnQuizStart += (_, _) => _quizStarted = true;
+        _quizManager.OnQuizStart += _ => _quizStarted = true;
         _quizManager.OnQuizEnd += _ => _quizStarted = false;
     }
 
@@ -49,8 +48,9 @@ public class GridLogic : BaseLogic<IGridAnimation>
     private void OnMouseDown()
     {
         if (!_gameStarted || _quizStarted) return;
-        
-        if (HasQuestion) _quizManager.StartQuiz(IsFinalQuestion);
+
         _boardManager.SelectPiece(GridCell);
     }
 }
+
+public enum QuestionType { None, Normal, Final };

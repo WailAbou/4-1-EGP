@@ -12,8 +12,6 @@ public class QuizLogic : BaseLogic<IQuizAnimation>
     protected override void SetupLogic()
     {
         _quizManager.OnQuizStart += InitQuiz;
-        _quizManager.OnQuizCorrect += CorrectAnswer;
-        _quizManager.OnQuizIncorrect += IncorrectAnswer;
     }
 
     protected override void SetupAnimation()
@@ -22,7 +20,7 @@ public class QuizLogic : BaseLogic<IQuizAnimation>
         _quizManager.OnQuizEnd += _animation.EndQuizAnimation;
     }
 
-    private void InitQuiz(bool isFinalQuiz, QuizScriptableObject quiz)
+    private void InitQuiz(Quiz quiz)
     {
         QuestionDisplay.SetText(quiz.Question);
         
@@ -35,27 +33,13 @@ public class QuizLogic : BaseLogic<IQuizAnimation>
         {
             var answerButton = Instantiate(AnswerPrefab, AnswersHolder);
             answerButton.GetComponentInChildren<TMP_Text>().SetText(answer.Content);
-            answerButton.GetComponentInChildren<Button>().onClick.AddListener(() => CheckAnswer(quiz, answer));
+            answerButton.GetComponentInChildren<Button>().onClick.AddListener(() => CheckAnswer(answer));
         }
     }
 
-    private void CheckAnswer(QuizScriptableObject quiz, QuizScriptableObject.Answer answer)
+    private void CheckAnswer(Quiz.Answer answer)
     {
-        if (answer.Correct) _quizManager.OnQuizCorrect?.Invoke(quiz.IsFinalQuiz, quiz);
-        else _quizManager.OnQuizIncorrect?.Invoke(quiz.IsFinalQuiz, quiz);
-    }
-
-    private void CorrectAnswer(bool isFinalQuiz, QuizScriptableObject quiz)
-    {
-        Debug.Log("Correct!");
-        _quizManager.EndQuiz();
-        _playerManager.TakeTurn();
-    }
-
-    private void IncorrectAnswer(bool isFinalQuiz, QuizScriptableObject quiz)
-    {
-        Debug.Log("Incorrect!");
-        _quizManager.EndQuiz();
-        _playerManager.NextTurn();
+        if (answer.Correct) _quizManager.CorrectAnswer();
+        else _quizManager.IncorrectAnswer();
     }
 }

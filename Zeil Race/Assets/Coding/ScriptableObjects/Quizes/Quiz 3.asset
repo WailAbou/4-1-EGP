@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e209eaf643a34643b5a1f915316c7c0, type: 3}
   m_Name: Quiz 3
   m_EditorClassIdentifier: 
+  QuestionType: 1
   Question: Wat is 2 x 2?
   Answers:
   - Content: 4

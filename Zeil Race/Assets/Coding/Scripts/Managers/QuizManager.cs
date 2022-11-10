@@ -4,26 +4,37 @@ using UnityEngine;
 
 public class QuizManager : Singleton<QuizManager>
 {
-    [Header("GameManager Settings")]
-    public List<QuizScriptableObject> NormalQuizes;
-    public List<QuizScriptableObject> FinalQuizes;
+    [Header("QuizManager Settings")]
+    public List<Quiz> NormalQuizes;
+    public List<Quiz> FinalQuizes;
 
-    public Action<bool, QuizScriptableObject> OnQuizCorrect;
-    public Action<bool, QuizScriptableObject> OnQuizIncorrect;
-    public Action<bool, QuizScriptableObject> OnQuizStart;
-    public Action<bool> OnQuizEnd;
+    public Action<Quiz> OnQuizStart;
+    public Action<Quiz> OnQuizEnd;
+    public Action<Transform> OnQuizCorrect;
+    public Action OnQuizIncorrect;
 
-    private bool _isFinalQuiz;
+    private Transform _target;
+    private Quiz _quiz;
 
-    public void StartQuiz(bool isFinalQuiz)
+    public void StartQuiz(QuestionType questionType, Transform target)
     {
-        _isFinalQuiz = isFinalQuiz;
-        var quiz = _isFinalQuiz ? FinalQuizes.PickRandom() : NormalQuizes.PickRandom();
-        OnQuizStart?.Invoke(_isFinalQuiz, quiz);
+        _target = target;
+        _quiz = questionType == QuestionType.Final ? FinalQuizes.PickRandom() : NormalQuizes.PickRandom();
+        OnQuizStart?.Invoke(_quiz);
     }
 
     public void EndQuiz()
     {
-        OnQuizEnd?.Invoke(_isFinalQuiz);
+        OnQuizEnd?.Invoke(_quiz);
+    }
+
+    public void CorrectAnswer()
+    {
+        OnQuizCorrect?.Invoke(_target);
+    }
+
+    public void IncorrectAnswer()
+    {
+        OnQuizIncorrect?.Invoke();
     }
 }

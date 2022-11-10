@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Quiz", menuName = "ScriptableObjects/QuizScriptableObject", order = 1)]
-public class QuizScriptableObject : ScriptableObject
+[CreateAssetMenu(fileName = "Quiz", menuName = "ScriptableObjects/Quiz", order = 1)]
+public class Quiz : ScriptableObject
 {
     [System.Serializable]
     public struct Answer
@@ -11,7 +11,7 @@ public class QuizScriptableObject : ScriptableObject
         public bool Correct;
     }
 
-    public bool IsFinalQuiz;
+    public QuestionType QuestionType;
     public string Question;
     public List<Answer> Answers;
 }
