@@ -21,6 +21,10 @@ public class DiceManager : Singleton<DiceManager>
         OnStartDiceRolls?.Invoke();
     }
 
+    /// <summary>
+    /// Stores the rolled dice number and goes on to the next one or ends the rolls if it is the last one.
+    /// </summary>
+    /// <param name="diceRoll">The rolled number of the current dice.</param>
     public void EndRollDices(int diceRoll)
     {
         _diceRolls[_diceIndex] = diceRoll;

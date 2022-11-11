@@ -16,7 +16,7 @@ public class GridAnimation : MonoBehaviour, IGridAnimation
 
     public void SpawnAnimation()
     {
-        transform.DOMoveY(_startHeight + 1.0f, 0).OnComplete(() => transform.DOMoveY(_startHeight, Constants.GRIDPIECE_SPAWN_DURATION));
+        transform.DOMoveY(_startHeight + 1.0f, 0).OnComplete(() => transform.DOMoveY(_startHeight, Animations.GRIDPIECE_SPAWN_DURATION));
     }
 
     public void HoverEnterAnimation(GridCell gridCell)

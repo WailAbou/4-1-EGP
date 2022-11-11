@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class Constants
+public static class Animations
 {
     [Header("Spawn Delays")]
     public const float GRIDPIECE_SPAWN_DELAY = 0.05f;

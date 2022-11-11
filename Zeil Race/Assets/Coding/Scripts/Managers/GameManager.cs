@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    private GridCell _gridCell;
     private Transform _target;
 
     public override void Setup()
@@ -12,13 +11,15 @@ public class GameManager : Singleton<GameManager>
         _quizManager.OnQuizIncorrect += IncorrectAnswer;
     }
 
+    /// <summary>
+    /// Stores the target and takes the turn if there is no question otherwise start a new quiz.
+    /// </summary>
+    /// <param name="gridCell">The current selected gridcell to make have the player make a turn to.</param>
     public void TakeTurn(GridCell gridCell)
     {
-        _gridCell = gridCell;
-        _target = _gridCell.gameObject.transform;
-
-        if (_gridCell.QuestionType == QuestionType.None) _playerManager.TakeTurn(_target);
-        else _quizManager.StartQuiz(_gridCell.QuestionType);
+        _target = gridCell.gameObject.transform;
+        if (gridCell.QuestionType == QuestionType.None) _playerManager.TakeTurn(_target);
+        else _quizManager.StartQuiz(gridCell.QuestionType);
     }
 
     private void CorrectAnswer(Quiz quiz)

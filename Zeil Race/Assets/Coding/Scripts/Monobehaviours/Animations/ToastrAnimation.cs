@@ -12,16 +12,22 @@ public class ToastrAnimation : MonoBehaviour, IToastrAnimation
         _toastrPanel = _toastr.GetComponent<RectTransform>();
     }
 
+    /// <summary>
+    /// Scales the toastr in waits for a moment and moves it to the top.
+    /// </summary>
     public void StartToastrAnimation(string text)
     {
         var sequence = DOTween.Sequence().SetEase(Ease.InOutQuad);
-        sequence.Append(_toastrPanel.DOScale(Vector3.one, Constants.TOASTR_SPAWN_DURATION / 2));
-        sequence.AppendInterval(Constants.TOASTR_SPAWN_DURATION / 2);
-        sequence.Append(_toastrPanel.DOAnchorPosY(-50, Constants.TOASTR_MOVE_DURATION));
+        sequence.Append(_toastrPanel.DOScale(Vector3.one, Animations.TOASTR_SPAWN_DURATION / 2));
+        sequence.AppendInterval(Animations.TOASTR_SPAWN_DURATION / 2);
+        sequence.Append(_toastrPanel.DOAnchorPosY(-50, Animations.TOASTR_MOVE_DURATION));
     }
 
+    /// <summary>
+    /// Scaling the toastr out and disabling it if is done.
+    /// </summary>
     public void EndToastrAnimation()
     {
-        _toastrPanel.DOScale(Vector3.zero, Constants.TOASTR_END_DURATION).SetEase(Ease.InOutQuad).OnComplete(() => _toastr.SetActive(false));
+        _toastrPanel.DOScale(Vector3.zero, Animations.TOASTR_END_DURATION).SetEase(Ease.InOutQuad).OnComplete(() => _toastr.SetActive(false));
     }
 }

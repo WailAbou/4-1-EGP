@@ -26,6 +26,10 @@ public class ToastrLogic : BaseLogic<IToastrAnimation>
         _uiManager.OnEndToastr += _animation.EndToastrAnimation;
     }
 
+    /// <summary>
+    /// Starts the toastr by setting the text, setting the inital position and setting it active.
+    /// </summary>
+    /// <param name="text">The toastr text that needs to be displayed.</param>
     public void StartToastr(string text)
     {
         _display.text = text;

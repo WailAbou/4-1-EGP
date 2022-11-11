@@ -10,7 +10,7 @@ public class GridLogic : BaseLogic<IGridAnimation>
     private Vector2 _playerPosition;
     private Vector2 _range;
     private bool _playerAbleToMove;
-    private bool _interactable => _playerAbleToMove && InRange(GridCell.position);
+    private bool _interactable => _playerAbleToMove && InRange();
 
     protected override void SetupLogic()
     {
@@ -44,8 +44,12 @@ public class GridLogic : BaseLogic<IGridAnimation>
         _gridManager.SelectGridCell(GridCell);
     }
 
-    private bool InRange(Vector2 gridPosition)
+    /// <summary>
+    /// Checks if the current grid is in range of the possible moves from the current player.
+    /// </summary>
+    private bool InRange()
     {
+        Vector2 gridPosition = GridCell.position;
         bool xInRange = gridPosition.x < _playerPosition.x + _range.x && gridPosition.x > _playerPosition.x - _range.x;
         bool yInRange = gridPosition.y < _playerPosition.y + _range.y && gridPosition.y > _playerPosition.y - _range.y;
         return xInRange && yInRange;

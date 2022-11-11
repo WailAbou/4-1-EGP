@@ -9,6 +9,10 @@ public class GridManager : Singleton<GridManager>
 
     private GridCell _hoveredCell;
 
+    /// <summary>
+    /// Sets the hovererd gridcell and dehovers the last hovered cell.
+    /// </summary>
+    /// <param name="gridCell">The current gridcell that is being hovered over.</param>
     public void HoverGridCell(GridCell gridCell)
     {
         if (_hoveredCell != null && _hoveredCell != gridCell)

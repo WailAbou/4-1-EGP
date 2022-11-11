@@ -17,7 +17,7 @@ public class QuizManager : Singleton<QuizManager>
 
     public void StartQuiz(QuestionType questionType)
     {
-        _quiz = questionType == QuestionType.Final ? FinalQuizes.PickRandom() : NormalQuizes.PickRandom();
+        _quiz = (questionType == QuestionType.Final) ? FinalQuizes.PickRandom() : NormalQuizes.PickRandom();
         OnQuizStart?.Invoke(_quiz);
     }
 

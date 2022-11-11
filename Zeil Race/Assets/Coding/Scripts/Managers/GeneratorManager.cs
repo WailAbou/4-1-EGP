@@ -28,35 +28,38 @@ public class GeneratorManager : Singleton<GeneratorManager>
         _origin = new Vector2(-(_gridWith * (GridSize.x / 2)) + (_gridWith / 2), -(_gridHeight * (GridSize.y / 2)) + (_gridHeight / 2));
         _gridManager.GridCells = new GridCell[GridSize.y, GridSize.x];
 
-        StartCoroutine(GenerateMap());
+        StartCoroutine(GenerateGrid());
     }
 
-    private IEnumerator GenerateMap()
+    /// <summary>
+    /// Picks a final position in the top right corner and spawns all the grid cells.
+    /// </summary>
+    private IEnumerator GenerateGrid()
     {
-        if (GridPiecePrefabs?.Count > 0 && GridPiecesHolder)
-        {
-            GridCell startGridCell = null;
-            var finalX = Random.Range((int)Math.Ceiling(GridSize.x * 0.75f), GridSize.x);
-            var finalY = Random.Range((int)Math.Ceiling(GridSize.y * 0.75f), GridSize.y);
+        GridCell startGridCell = null;
+        var finalX = Random.Range((int)Math.Ceiling(GridSize.x * 0.75f), GridSize.x);
+        var finalY = Random.Range((int)Math.Ceiling(GridSize.y * 0.75f), GridSize.y);
             
-            for (int y = 0; y < GridSize.y; y++)
+        for (int y = 0; y < GridSize.y; y++)
+        {
+            for (int x = 0; x < GridSize.x; x++)
             {
-                for (int x = 0; x < GridSize.x; x++)
-                {
-                    var gridCellPrefab= (x == finalX && y == finalY) ? EndGridPiecePrefab : GetGridCellPrefab(x, y);
-                    var gridCell = SpawnGridCell(x, y, gridCellPrefab);
-                    if (startGridCell == null) startGridCell = gridCell;
-                    yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_SPAWN_DELAY);
-                }
+                var gridCellPrefab= (x == finalX && y == finalY) ? EndGridPiecePrefab : GetGridCellPrefab(x, y);
+                var gridCell = SpawnGridCell(x, y, gridCellPrefab);
+                if (startGridCell == null) startGridCell = gridCell;
+                yield return new WaitForSecondsRealtime(Animations.GRIDPIECE_SPAWN_DELAY);
             }
-
-            yield return new WaitForSecondsRealtime(Constants.GRIDPIECE_SPAWN_DURATION);
-            OnGenerateDone?.Invoke();
-            yield return new WaitForSecondsRealtime(Constants.BOARD_SPAWN_DURATION);
-            OnAnimationsDone?.Invoke(startGridCell);
         }
+
+        yield return new WaitForSecondsRealtime(Animations.GRIDPIECE_SPAWN_DURATION);
+        OnGenerateDone?.Invoke();
+        yield return new WaitForSecondsRealtime(Animations.BOARD_SPAWN_DURATION);
+        OnAnimationsDone?.Invoke(startGridCell);
     }
 
+    /// <summary>
+    /// Has a higher spawn chance of question grids the closer you get to the final gridcell.
+    /// </summary>
     private GameObject GetGridCellPrefab(int x, int y)
     {
         var islandChance = Random.Range(0, x + y);
@@ -64,6 +67,9 @@ public class GeneratorManager : Singleton<GeneratorManager>
         return gridCellPrefab;
     }
 
+    /// <summary>
+    /// Spawns the grid cell object and sets the position and sets the gridcell class.
+    /// </summary>
     private GridCell SpawnGridCell(int x, int y, GameObject gridCellPrefab)
     {
         var spawnedGridCell = Instantiate(gridCellPrefab, GridPiecesHolder);

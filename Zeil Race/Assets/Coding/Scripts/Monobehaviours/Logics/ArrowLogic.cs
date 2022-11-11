@@ -13,6 +13,10 @@ public class ArrowLogic : BaseLogic<IArrowAnimation>
         _playerManager.OnPlayersSpawned += _animation.MoveAnimation;
     }
 
+    /// <summary>
+    /// Displaying the arrow above the player after every new turn.
+    /// </summary>
+    /// <param name="player">The player of this new turn.</param>
     private void DisplayArrow(Transform player, Vector2Int gridPosition)
     {
         transform.position = player.position + Vector3.up / 2;

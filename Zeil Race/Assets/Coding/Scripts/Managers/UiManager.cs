@@ -22,10 +22,14 @@ public class UiManager : Singleton<UiManager>
         StartCoroutine(StartToastrRoutine(text));
     }
 
+    /// <summary>
+    /// Starts the toastr with the display text waits until it has spawned and moved then ends it.
+    /// </summary>
+    /// <param name="text">The toastr text to be displayed.</param>
     private IEnumerator StartToastrRoutine(string text)
     {
         OnStartToastr?.Invoke(text);
-        yield return new WaitForSecondsRealtime(Constants.TOASTR_SPAWN_DURATION + Constants.TOASTR_MOVE_DURATION);
+        yield return new WaitForSecondsRealtime(Animations.TOASTR_SPAWN_DURATION + Animations.TOASTR_MOVE_DURATION);
         OnEndToastr?.Invoke();
     }
 

@@ -35,6 +35,9 @@ public class CameraManager : Singleton<CameraManager>
         FollowCam.LookAt = player.transform;
     }
 
+    /// <summary>
+    /// Cycling between the camera's by setting the new camera priority higher then the current one.
+    /// </summary>
     public void SwitchCams()
     {
         if (_camCurrent) _camCurrent.Priority = 10;

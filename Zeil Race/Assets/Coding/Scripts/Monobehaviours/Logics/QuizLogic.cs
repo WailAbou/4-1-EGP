@@ -20,6 +20,10 @@ public class QuizLogic : BaseLogic<IQuizAnimation>
         _quizManager.OnQuizEnd += _animation.EndQuizAnimation;
     }
 
+    /// <summary>
+    /// Binds the quiz data like question and dynamically creates the answer buttons with the answer texts and click feedback.
+    /// </summary>
+    /// <param name="quiz">The current quiz that needs to be displayed.</param>
     private void InitQuiz(Quiz quiz)
     {
         QuestionDisplay.SetText(quiz.Question);

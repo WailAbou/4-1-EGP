@@ -19,6 +19,9 @@ public class DiceLogic : BaseLogic<IDiceAnimation>
         _gridManager.OnSelectGridCell += _animation.MoveEndAnimation;
     }
 
+    /// <summary>
+    /// Checks if space is clicked and the dices are rolling, then gets the current diceRoll and ends the roll in the manager.
+    /// </summary>
     private void Update()
     {
         if (_dicesRolling && Input.GetKeyDown(KeyCode.Space))
