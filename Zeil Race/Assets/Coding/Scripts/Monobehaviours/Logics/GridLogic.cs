@@ -8,14 +8,14 @@ public class GridLogic : BaseLogic<IGridAnimation>
     public QuestionType QuestionType;
 
     private Vector2 _playerPosition;
-    private Vector2 _range;
+    private int _range;
     private bool _playerAbleToMove;
     private bool _interactable => _playerAbleToMove && InRange();
 
     protected override void SetupLogic()
     {
         _playerManager.OnTurnStart += (_, playerPosition) => _playerPosition = playerPosition;
-        _diceManager.OnEndDiceRolls += rolls => { _playerAbleToMove = true; _range = rolls; };
+        _diceManager.OnEndDiceRolls += roll => { _playerAbleToMove = true; _range = roll; };
         _gridManager.OnSelectGridCell += _ => _playerAbleToMove = false;
     }
 
@@ -50,9 +50,9 @@ public class GridLogic : BaseLogic<IGridAnimation>
     private bool InRange()
     {
         Vector2 gridPosition = GridCell.position;
-        bool xInRange = gridPosition.x < _playerPosition.x + _range.x && gridPosition.x > _playerPosition.x - _range.x;
-        bool yInRange = gridPosition.y < _playerPosition.y + _range.y && gridPosition.y > _playerPosition.y - _range.y;
-        return xInRange && yInRange;
+        int xCost = (int)Mathf.Abs(_playerPosition.x - gridPosition.x);
+        int yCost = (int)Mathf.Abs(_playerPosition.y - gridPosition.y);
+        return (xCost + yCost) <= _range;
     }
 }
 

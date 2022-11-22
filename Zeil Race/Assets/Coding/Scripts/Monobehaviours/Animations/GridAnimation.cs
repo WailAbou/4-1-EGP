@@ -10,12 +10,12 @@ public class GridAnimation : MonoBehaviour, IGridAnimation
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
-        _startColor = _renderer.material.color;
-        _startHeight = transform.position.y;
     }
 
     public void SpawnAnimation()
     {
+        _startColor = _renderer.material.color;
+        _startHeight = transform.position.y;
         transform.DOMoveY(_startHeight + 1.0f, 0).OnComplete(() => transform.DOMoveY(_startHeight, Animations.GRIDPIECE_SPAWN_DURATION));
     }
 
