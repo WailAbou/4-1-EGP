@@ -1,6 +1,8 @@
+using System;
+
 public interface IDiceAnimation
 {
-    public void MoveStartAnimation();
-    public int MoveStopAnimation(int diceIndex);
-    public void MoveEndAnimation(GridCell gridCell);
+    public void MoveStartAnimation(int allowedRolls);
+    public void MoveStopAnimation(int diceIndex, Action<int> onDiceStop);
+    public void MoveEndAnimation(GridCell gridCell, int allowedRolls);
 }
