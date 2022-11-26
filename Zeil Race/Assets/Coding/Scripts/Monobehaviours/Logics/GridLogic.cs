@@ -52,7 +52,7 @@ public class GridLogic : BaseLogic<IGridAnimation>
         Vector2 gridPosition = GridCell.position;
         int xCost = (int)Mathf.Abs(_playerPosition.x - gridPosition.x);
         int yCost = (int)Mathf.Abs(_playerPosition.y - gridPosition.y);
-        return (xCost + yCost) <= _range;
+        return (xCost + yCost) == _range;
     }
 }
 
