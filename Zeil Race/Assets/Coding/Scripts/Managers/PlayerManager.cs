@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -18,26 +19,41 @@ public class PlayerManager : Singleton<PlayerManager>
     private List<PlayerLogic> _players = new List<PlayerLogic>();
     private PlayerLogic _currentPlayer;
     private int _playerIndex;
-    public int _playerAmount = 3;
+    private int _playerAmount = 3;
+    private Level _level;
 
     public override void Setup()
     {
         _colors.FillRandom(_playerAmount);
-        _generatorManager.OnAnimationsDone += (startGridCell, level) => StartCoroutine(SpawnPlayers(startGridCell, level)); ;
+        _generatorManager.OnAnimationsDone += SetupPlayer;
+        _uiManager.OnEndCoordinates += correct => StartCoroutine(Spawn(correct));
     }
 
-    private IEnumerator SpawnPlayers(CellLogic startCell, Level level)
+    private void SetupPlayer(CellLogic startCell, Level level)
     {
-        for (int i = 0; i < _playerAmount; i++)
-        {
-            var startCoordinates = level.StartPositions[i];
-            var startPosition = _cellManager.GetPosition(startCoordinates);
-            _uiManager.StartToastr($"Plaats speler X op de coordinaten: ({startCoordinates.x}, {startCoordinates.y})");
-            yield return SpawnPlayer(startPosition, i);
+        _level = level;
+        var startCoordinates = _level.StartPositions[_playerIndex];
+
+        _uiManager.StartToastr($"Plaats speler X op de coordinaten: ({startCoordinates.x}, {startCoordinates.y})");
+        _uiManager.StartCoordinates("Vul je startcoordinaten in:");
+    }
+
+    private IEnumerator Spawn(bool correct)
+    {
+        var startCoordinates = _level.StartPositions[_playerIndex];
+        var startPosition = _cellManager.GetPosition(startCoordinates);
+
+        if (correct) yield return SpawnPlayer(startPosition, _playerIndex);
+        else {
+            _playerIndex = (_playerIndex + 1) % _playerAmount;
+            //SetupPlayer();
         }
 
-        NextTurn();
-        OnPlayersSpawned?.Invoke(_players);
+        if (_players.Count == _playerAmount)
+        {
+            NextTurn();
+            OnPlayersSpawned?.Invoke(_players);
+        }
     }
 
     private IEnumerator SpawnPlayer(Vector3 startPositon, int i)
