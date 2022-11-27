@@ -6,7 +6,7 @@ public class GameManager : Singleton<GameManager>
 
     public override void Setup()
     {
-        _gridManager.OnSelectGridCell += TakeTurn;
+        _cellManager.OnSelectCell += TakeTurn;
         _quizManager.OnQuizCorrect += CorrectAnswer;
         _quizManager.OnQuizIncorrect += IncorrectAnswer;
     }
@@ -15,11 +15,11 @@ public class GameManager : Singleton<GameManager>
     /// Stores the target and takes the turn if there is no question otherwise start a new quiz.
     /// </summary>
     /// <param name="gridCell">The current selected gridcell to make have the player make a turn to.</param>
-    public void TakeTurn(GridCell gridCell)
+    public void TakeTurn(CellLogic cell)
     {
-        _target = gridCell.gameObject.transform;
-        if (gridCell.QuestionType == QuestionType.None) _playerManager.TakeTurn(_target);
-        else _quizManager.StartQuiz(gridCell.QuestionType);
+        _target = cell.gameObject.transform;
+        if (cell.QuestionType == QuestionType.None) _playerManager.TakeTurn(_target);
+        else _quizManager.StartQuiz(cell.QuestionType);
     }
 
     private void CorrectAnswer(Quiz quiz)

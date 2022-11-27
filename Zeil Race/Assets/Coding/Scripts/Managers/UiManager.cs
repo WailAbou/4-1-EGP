@@ -13,7 +13,7 @@ public class UiManager : Singleton<UiManager>
 
     public override void Setup()
     {
-        _gridManager.OnHoverEnterGridCell += DisplayCoordinates;
+        _cellManager.OnHoverEnterCell += DisplayCoordinates;
         _quizManager.OnQuizCorrect += DisplayEndScreen;
     }
 
@@ -33,9 +33,9 @@ public class UiManager : Singleton<UiManager>
         OnEndToastr?.Invoke();
     }
 
-    private void DisplayCoordinates(GridCell gridCell)
+    private void DisplayCoordinates(CellLogic cell)
     {
-        CoordinatesDisplay.SetText($"Coordinaten: ({gridCell?.position.x} , {gridCell?.position.y})");
+        CoordinatesDisplay.SetText($"Coordinaten: ({cell?.Position.x} , {cell?.Position.y})");
     }
 
     private void DisplayEndScreen(Quiz quiz)

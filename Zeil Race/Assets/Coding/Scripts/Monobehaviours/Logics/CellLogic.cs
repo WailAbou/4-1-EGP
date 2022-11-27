@@ -1,13 +1,12 @@
 using UnityEngine;
 
-[RequireComponent(typeof(IGridAnimation))]
-public class GridLogic : BaseLogic<IGridAnimation>
+[RequireComponent(typeof(ICellAnimation))]
+public class CellLogic : BaseLogic<ICellAnimation>
 {
-    [HideInInspector]
-    public GridCell GridCell;
+    public Vector2Int Position;
     public QuestionType QuestionType;
 
-    private Vector2 _playerPosition;
+    private Vector2Int _playerPosition;
     private int _range;
     private bool _playerAbleToMove;
     private bool _interactable => _playerAbleToMove && InRange();
@@ -16,7 +15,7 @@ public class GridLogic : BaseLogic<IGridAnimation>
     {
         _playerManager.OnTurnStart += (_, playerPosition) => _playerPosition = playerPosition;
         _diceManager.OnEndDiceRolls += roll => { _playerAbleToMove = true; _range = roll; };
-        _gridManager.OnSelectGridCell += _ => _playerAbleToMove = false;
+        _cellManager.OnSelectCell += _ => _playerAbleToMove = false;
     }
 
     protected override void SetupAnimation()
@@ -28,30 +27,26 @@ public class GridLogic : BaseLogic<IGridAnimation>
     {
         if (!_interactable) return;
 
-        _animation.HoverEnterAnimation(GridCell);
-        _gridManager.HoverGridCell(GridCell);
+        _animation.HoverEnterAnimation(this);
+        _cellManager.HoverCell(this);
     }
 
     private void OnMouseExit()
     {
-        _animation.HoverLeaveAnimation(GridCell);
+        _animation.HoverLeaveAnimation(this);
     }
 
     private void OnMouseDown()
     {
         if (!_interactable) return;
 
-        _gridManager.SelectGridCell(GridCell);
+        _cellManager.SelectCell(this);
     }
 
-    /// <summary>
-    /// Checks if the current grid is in range of the possible moves from the current player.
-    /// </summary>
     private bool InRange()
     {
-        Vector2 gridPosition = GridCell.position;
-        int xCost = (int)Mathf.Abs(_playerPosition.x - gridPosition.x);
-        int yCost = (int)Mathf.Abs(_playerPosition.y - gridPosition.y);
+        int xCost = Mathf.Abs(_playerPosition.x - Position.x);
+        int yCost = Mathf.Abs(_playerPosition.y - Position.y);
         return (xCost + yCost) == _range;
     }
 }

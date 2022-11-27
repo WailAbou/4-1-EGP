@@ -23,7 +23,7 @@ public class CameraManager : Singleton<CameraManager>
             SwitchCams();
     }
 
-    private void SetFollowCam(PlayerLogic[] players)
+    private void SetFollowCam(List<PlayerLogic> players)
     {
         Cams.Add(FollowCam);
         SetFollowTarget(players[0].transform, Vector2Int.zero);
@@ -35,9 +35,6 @@ public class CameraManager : Singleton<CameraManager>
         FollowCam.LookAt = player.transform;
     }
 
-    /// <summary>
-    /// Cycling between the camera's by setting the new camera priority higher then the current one.
-    /// </summary>
     public void SwitchCams()
     {
         if (_camCurrent) _camCurrent.Priority = 10;

@@ -1914,7 +1914,7 @@ MonoBehaviour:
   DuplicatesDestroy: 0
   PlayersHolder: {fileID: 189164202}
   PlayerPrefab: {fileID: 4950863676373783959, guid: a71c16ce07beec945b5163e23c809621, type: 3}
-  PlayerAmount: 3
+  _playerAmount: 3
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2729,6 +2729,8 @@ MonoBehaviour:
   GridPiecePrefabs:
   - {fileID: 2456526737769985787, guid: 7ed66f58471e4b844ba5b7baeb427718, type: 3}
   - {fileID: 2456526737769985787, guid: b81b66ed8fe6745469ce1c53d620c3cb, type: 3}
+  Levels:
+  - {fileID: 11400000, guid: 1e73613e5621de240af284ac32e25fa8, type: 2}
   GridSize: {x: 10, y: 10}
   _origin: {x: 0, y: 0}
 --- !u!1 &1354222181
@@ -4206,7 +4208,7 @@ GameObject:
   - component: {fileID: 1957251778}
   - component: {fileID: 1957251779}
   m_Layer: 0
-  m_Name: Grid Manager
+  m_Name: Cell Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

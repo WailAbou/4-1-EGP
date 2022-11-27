@@ -70,7 +70,7 @@ public class DiceAnimation : MonoBehaviour, IDiceAnimation
         StartCoroutine(ThrowDice(diceIndex, onDiceStop));
     }
 
-    public void MoveEndAnimation(GridCell gridCell, int allowedRolls)
+    public void MoveEndAnimation(CellLogic cell, int allowedRolls)
     {
         DiceRigidBody.useGravity = false;
         DiceRigidBody.position = new Vector3(0, 10, 0);

@@ -11,7 +11,7 @@ public static class Extensions
         return picked;
     }
 
-    public static void Fill(this List<Color> colors, int amount)
+    public static void FillRandom(this List<Color> colors, int amount)
     {
         for (int i = 0; i < amount; i++)
         {

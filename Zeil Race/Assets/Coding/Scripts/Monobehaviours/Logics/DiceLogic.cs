@@ -19,7 +19,7 @@ public class DiceLogic : BaseLogic<IDiceAnimation>
     protected override void SetupAnimation()
     {
         _diceManager.OnStartDiceRolls += _animation.MoveStartAnimation;
-        _gridManager.OnSelectGridCell += (gridCell) => _animation.MoveEndAnimation(gridCell, _allowedRolls);
+        _cellManager.OnSelectCell += (gridCell) => _animation.MoveEndAnimation(gridCell, _allowedRolls);
     }
 
     /// <summary>

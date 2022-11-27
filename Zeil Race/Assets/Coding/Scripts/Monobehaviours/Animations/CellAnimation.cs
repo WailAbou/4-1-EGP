@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class GridAnimation : MonoBehaviour, IGridAnimation
+public class CellAnimation : MonoBehaviour, ICellAnimation
 {
     private Renderer _renderer;
     private Color _startColor;
@@ -19,12 +19,12 @@ public class GridAnimation : MonoBehaviour, IGridAnimation
         transform.DOMoveY(_startHeight + 1.0f, 0).OnComplete(() => transform.DOMoveY(_startHeight, Animations.GRIDPIECE_SPAWN_DURATION));
     }
 
-    public void HoverEnterAnimation(GridCell gridCell)
+    public void HoverEnterAnimation(CellLogic cell)
     {
         _renderer.material.color = Color.white;
     }
 
-    public void HoverLeaveAnimation(GridCell gridCell)
+    public void HoverLeaveAnimation(CellLogic cell)
     {
         _renderer.material.color = _startColor;
     }

@@ -9,72 +9,58 @@ public class PlayerManager : Singleton<PlayerManager>
     public Transform PlayersHolder;
     public GameObject PlayerPrefab;
 
-    [Header("PlayerManager Settings")]
-    public int PlayerAmount = 3;
-
     public Action<Transform, Vector2Int> OnTurnStart;
     public Action<Transform, Transform> OnMoveStart;
     public Action<Transform> OnMoveEnd;
-    public Action<PlayerLogic[]> OnPlayersSpawned;
+    public Action<List<PlayerLogic>> OnPlayersSpawned;
 
-    private PlayerLogic[] _players;
-    private PlayerLogic _currentPlayer;
     private List<Color> _colors = new List<Color>();
-    private float _offset = 0.3f;
+    private List<PlayerLogic> _players = new List<PlayerLogic>();
+    private PlayerLogic _currentPlayer;
     private int _playerIndex;
+    public int _playerAmount = 3;
 
     public override void Setup()
     {
-        _players = new PlayerLogic[PlayerAmount];
-        _colors.Fill(PlayerAmount);
-        _generatorManager.OnAnimationsDone += (startGridCell) => StartCoroutine(SpawnPlayers(startGridCell));
+        _colors.FillRandom(_playerAmount);
+        _generatorManager.OnAnimationsDone += (startGridCell, level) => StartCoroutine(SpawnPlayers(startGridCell, level)); ;
     }
 
-    /// <summary>
-    /// Spawns the players sets the colors and stores them, then going to the first turn.
-    /// </summary>
-    /// <param name="startGridCell">The origin point of the board, aka the starting gridcell.</param>
-    private IEnumerator SpawnPlayers(GridCell startGridCell)
+    private IEnumerator SpawnPlayers(CellLogic startCell, Level level)
     {
-        for (int i = 0; i < _players.Length; i++)
+        for (int i = 0; i < _playerAmount; i++)
         {
-            var startPos = startGridCell.gameObject.transform.position;
-            var position = new Vector3(startPos.x + _offset * i, startPos.y, startPos.z);
-
-            var playerObject = Instantiate(PlayerPrefab, PlayersHolder);
-            var player = playerObject.GetComponent<PlayerLogic>();
-
-            player.transform.position = position;
-            player.Sail.material.color = _colors.PickRandom(true);
-            _players[i] = player;
-
-            yield return new WaitForSecondsRealtime(Animations.PLAYER_SPAWN_DURATION);
+            var startCoordinates = level.StartPositions[i];
+            var startPosition = _cellManager.GetPosition(startCoordinates);
+            _uiManager.StartToastr($"Plaats speler X op de coordinaten: ({startCoordinates.x}, {startCoordinates.y})");
+            yield return SpawnPlayer(startPosition, i);
         }
 
         NextTurn();
         OnPlayersSpawned?.Invoke(_players);
     }
 
-    /// <summary>
-    /// Starting the next turn.
-    /// </summary>
-    public void NextTurn()
+    private IEnumerator SpawnPlayer(Vector3 startPositon, int i)
     {
-        _currentPlayer = _players[_playerIndex];
-        _uiManager.StartToastr($"Speler {_playerIndex + 1} beurt!");
-        _playerIndex = (_playerIndex + 1) % PlayerAmount;
-        OnTurnStart?.Invoke(_currentPlayer.transform, ClosestGridCell());
+        var position = new Vector3(startPositon.x, startPositon.y, startPositon.z);
+        var player = Instantiate(PlayerPrefab, PlayersHolder).GetComponent<PlayerLogic>();
+
+        player.transform.position = position;
+        player.Sail.material.color = _colors.PickRandom(true);
+        _players.Add(player);
+
+        yield return new WaitForSecondsRealtime(Animations.PLAYER_SPAWN_DURATION);
     }
 
-    /// <summary>
-    /// Getting the closest gridcell to the player.
-    /// </summary>
-    /// <returns>The closest grid cell.</returns>
-    private Vector2Int ClosestGridCell()
+    public void NextTurn()
     {
-        int x = Mathf.RoundToInt((_currentPlayer.transform.position.x + 1.35f) * 3);
-        int y = Mathf.RoundToInt((_currentPlayer.transform.position.z + 1.35f) * 3);
-        return new Vector2Int(x, y);
+        _uiManager.StartToastr($"Speler {_playerIndex + 1} beurt!");
+
+        _currentPlayer = _players[_playerIndex];
+        _playerIndex = (_playerIndex + 1) % _playerAmount;
+        Vector2Int cellCoordinates = _cellManager.GetCoordinates(_currentPlayer.transform.position);
+
+        OnTurnStart?.Invoke(_currentPlayer.transform, cellCoordinates);
     }
 
     public void TakeTurn(Transform target)
@@ -82,10 +68,6 @@ public class PlayerManager : Singleton<PlayerManager>
         StartCoroutine(TakeTurnRoutine(target));
     }
 
-    /// <summary>
-    /// Starts the player movement, waits until the animation is done, goes on to the next turn and ends the turn.
-    /// </summary>
-    /// <param name="target">The target the player wants to move to.</param>
     private IEnumerator TakeTurnRoutine(Transform target)
     {
         OnMoveStart?.Invoke(_currentPlayer.transform, target);
