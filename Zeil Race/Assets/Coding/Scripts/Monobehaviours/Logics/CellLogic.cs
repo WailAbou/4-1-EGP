@@ -3,19 +3,19 @@ using UnityEngine;
 [RequireComponent(typeof(ICellAnimation))]
 public class CellLogic : BaseLogic<ICellAnimation>
 {
-    public Vector2Int Position;
+    public Vector2Int Coordinates;
     public QuestionType QuestionType;
 
-    private Vector2Int _playerPosition;
+    private Vector2Int _currentPlayerCoordinates;
     private int _range;
     private bool _playerAbleToMove;
     private bool _interactable => _playerAbleToMove && InRange();
 
     protected override void SetupLogic()
     {
-        _playerManager.OnTurnStart += (_, playerPosition) => _playerPosition = playerPosition;
+        _playerManager.OnTurnStart += (_, currentPlayerCoordinates) => _currentPlayerCoordinates = currentPlayerCoordinates;
         _diceManager.OnEndDiceRolls += roll => { _playerAbleToMove = true; _range = roll; };
-        _cellManager.OnSelectCell += _ => _playerAbleToMove = false;
+        _cellManager.OnSelectCell += _ => { _playerAbleToMove = false; };
     }
 
     protected override void SetupAnimation()
@@ -45,9 +45,9 @@ public class CellLogic : BaseLogic<ICellAnimation>
 
     private bool InRange()
     {
-        int xCost = Mathf.Abs(_playerPosition.x - Position.x);
-        int yCost = Mathf.Abs(_playerPosition.y - Position.y);
-        return (xCost + yCost) == _range;
+        int xCost = Mathf.Abs(_currentPlayerCoordinates.x - Coordinates.x);
+        int yCost = Mathf.Abs(_currentPlayerCoordinates.y - Coordinates.y);
+        return (xCost + yCost) == _range || _range == 0;
     }
 }
 

@@ -5,6 +5,7 @@ public class ToastrAnimation : MonoBehaviour, IToastrAnimation
 {
     private GameObject _toastr;
     private RectTransform _toastrPanel;
+    private Sequence _sequence;
 
     private void Awake()
     {
@@ -12,22 +13,19 @@ public class ToastrAnimation : MonoBehaviour, IToastrAnimation
         _toastrPanel = _toastr.GetComponent<RectTransform>();
     }
 
-    /// <summary>
-    /// Scales the toastr in waits for a moment and moves it to the top.
-    /// </summary>
     public void StartToastrAnimation(string text)
     {
-        var sequence = DOTween.Sequence().SetEase(Ease.InOutQuad);
-        sequence.Append(_toastrPanel.DOScale(Vector3.one, Animations.TOASTR_SPAWN_DURATION / 2));
-        sequence.AppendInterval(Animations.TOASTR_SPAWN_DURATION / 2);
-        sequence.Append(_toastrPanel.DOAnchorPosY(-50, Animations.TOASTR_MOVE_DURATION));
-    }
+        _toastrPanel.DOKill();
+        _sequence?.Kill();
 
-    /// <summary>
-    /// Scaling the toastr out and disabling it if is done.
-    /// </summary>
-    public void EndToastrAnimation()
-    {
-        _toastrPanel.DOScale(Vector3.zero, Animations.TOASTR_END_DURATION).SetEase(Ease.InOutQuad).OnComplete(() => _toastr.SetActive(false));
+        _sequence = DOTween.Sequence().SetEase(Ease.InOutQuad);
+        _sequence.Append(_toastrPanel.DOScale(Vector3.one, Animations.TOASTR_SPAWN_DURATION / 2));
+        _sequence.AppendInterval(Animations.TOASTR_SPAWN_DURATION / 2);
+        _sequence.Append(_toastrPanel.DOAnchorPosY(-50, Animations.TOASTR_MOVE_DURATION / 2));
+        _sequence.AppendInterval(Animations.TOASTR_MOVE_DURATION / 2);
+
+        _sequence.OnComplete(() => {
+            _toastrPanel.DOScale(Vector3.zero, Animations.TOASTR_END_DURATION).SetEase(Ease.InOutQuad).OnComplete(() => _toastr.SetActive(false));
+        });
     }
 }

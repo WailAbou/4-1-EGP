@@ -23,7 +23,7 @@ public class CameraManager : Singleton<CameraManager>
             SwitchCams();
     }
 
-    private void SetFollowCam(List<PlayerLogic> players)
+    private void SetFollowCam(PlayerLogic[] players)
     {
         Cams.Add(FollowCam);
         SetFollowTarget(players[0].transform, Vector2Int.zero);

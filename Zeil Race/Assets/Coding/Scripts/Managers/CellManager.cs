@@ -24,11 +24,11 @@ public class CellManager : Singleton<CellManager>
         OnSelectCell?.Invoke(cell);
     }
 
-    public Vector3 GetPosition(Vector2Int cellPosition)
+    public Vector3 GetPosition(Vector2Int cellCoordinates)
     {
         foreach (var cell in Cells)
         {
-            if (cell.Position == cellPosition) return cell.transform.position;
+            if (cell.Coordinates == cellCoordinates) return cell.transform.position;
         }
         return Vector3.zero;
     }
@@ -43,7 +43,7 @@ public class CellManager : Singleton<CellManager>
             if (distance < closestDistance)
             {
                 closestDistance = distance;
-                closestCoordinates = cell.Position;
+                closestCoordinates = cell.Coordinates;
             }
         }
         return closestCoordinates;

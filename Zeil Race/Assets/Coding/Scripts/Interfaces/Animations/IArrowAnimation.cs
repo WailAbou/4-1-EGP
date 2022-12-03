@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
 public interface IArrowAnimation
 {
-    public void MoveAnimation(List<PlayerLogic> players);
+    public void MoveAnimation(PlayerLogic[] players);
 }

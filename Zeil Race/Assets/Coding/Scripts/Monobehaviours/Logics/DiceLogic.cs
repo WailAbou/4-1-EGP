@@ -22,9 +22,6 @@ public class DiceLogic : BaseLogic<IDiceAnimation>
         _cellManager.OnSelectCell += (gridCell) => _animation.MoveEndAnimation(gridCell, _allowedRolls);
     }
 
-    /// <summary>
-    /// Checks if space is clicked and the dices are rolling, then gets the current diceRoll and ends the roll in the manager.
-    /// </summary>
     private void Update()
     {
         if (_dicesRolling && Input.GetKeyDown(KeyCode.Space))

@@ -3,9 +3,11 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     private Transform _target;
+    private bool _gameStarted;
 
     public override void Setup()
     {
+        _playerManager.OnPlayersSpawned += _ => _gameStarted = true;
         _cellManager.OnSelectCell += TakeTurn;
         _quizManager.OnQuizCorrect += CorrectAnswer;
         _quizManager.OnQuizIncorrect += IncorrectAnswer;
@@ -17,6 +19,8 @@ public class GameManager : Singleton<GameManager>
     /// <param name="gridCell">The current selected gridcell to make have the player make a turn to.</param>
     public void TakeTurn(CellLogic cell)
     {
+        if (!_gameStarted) return;
+
         _target = cell.gameObject.transform;
         if (cell.QuestionType == QuestionType.None) _playerManager.TakeTurn(_target);
         else _quizManager.StartQuiz(cell.QuestionType);

@@ -10,7 +10,12 @@ public class CoordinatesAnimation : MonoBehaviour, ICoordinatesAnimation
 
     public void SpawnAnimation(string text)
     {
-        CoordinatesPanel.DOScale(Vector3.one, 1.0f);
+        CoordinatesPanel.DOScale(Vector3.one, Animations.COORDINATES_SPAWN_DURATION);
         CoordinatesDisplay.SetText(text);
+    }
+
+    public void StopAnimation()
+    {
+        CoordinatesPanel.DOScale(Vector3.zero, Animations.COORDINATES_END_DURATION);
     }
 }

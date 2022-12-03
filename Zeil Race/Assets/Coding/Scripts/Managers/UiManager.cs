@@ -13,6 +13,8 @@ public class UiManager : Singleton<UiManager>
     public Action<string> OnStartCoordinates;
     public Action<bool> OnEndCoordinates;
 
+    private Vector2Int _coordinates;
+
     public override void Setup()
     {
         _cellManager.OnHoverEnterCell += DisplayCoordinates;
@@ -27,23 +29,25 @@ public class UiManager : Singleton<UiManager>
     private IEnumerator StartToastrRoutine(string text)
     {
         OnStartToastr?.Invoke(text);
-        yield return new WaitForSecondsRealtime(Animations.TOASTR_SPAWN_DURATION + Animations.TOASTR_MOVE_DURATION);
+        yield return new WaitForSecondsRealtime(Animations.TOASTR_SPAWN_DURATION + Animations.TOASTR_MOVE_DURATION + Animations.TOASTR_END_DURATION);
         OnEndToastr?.Invoke();
     }
 
-    public void StartCoordinates(string text)
+    public void StartCoordinates(string text, Vector2Int coordinates)
     {
+        _coordinates = coordinates;
         OnStartCoordinates?.Invoke(text);
     }
 
-    public void EndCoordinates(bool correct)
+    public void EndCoordinates(Vector2Int coordinates)
     {
+        var correct = (coordinates == _coordinates);
         OnEndCoordinates?.Invoke(correct);
     }
 
     private void DisplayCoordinates(CellLogic cell)
     {
-        CoordinatesDisplay.SetText($"Coordinaten: ({cell?.Position.x} , {cell?.Position.y})");
+        CoordinatesDisplay.SetText($"Coordinaten: ({cell?.Coordinates.x} , {cell?.Coordinates.y})");
     }
 
     private void DisplayEndScreen(Quiz quiz)

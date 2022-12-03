@@ -2868,14 +2868,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -3166,14 +3166,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -3291,11 +3291,11 @@ RectTransform:
   m_Father: {fileID: 1780115536}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 650, y: 350}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1147660943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4843,6 +4843,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 692cd2e634ea74945a1a4e6a5c445846, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CoordinatesPanel: {fileID: 1147660942}
+  CoordinatesDisplay: {fileID: 879940284}
 --- !u!114 &1780115538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4855,6 +4857,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d97e21b7753f045a05aabc62f54ab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CoordinatesButton: {fileID: 1874358900}
+  XCoordinates: {fileID: 0}
+  YCoordinates: {fileID: 0}
 --- !u!1 &1804817188
 GameObject:
   m_ObjectHideFlags: 0

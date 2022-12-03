@@ -69,7 +69,7 @@ public class GeneratorManager : Singleton<GeneratorManager>
 
         gridCell.transform.localPosition = position;
         gridCell.transform.localScale = scale;
-        gridCell.Position = new Vector2Int(x, y);
+        gridCell.Coordinates = new Vector2Int(x, y);
         _cellManager.Cells[y, x] = gridCell;
 
         return gridCell;
