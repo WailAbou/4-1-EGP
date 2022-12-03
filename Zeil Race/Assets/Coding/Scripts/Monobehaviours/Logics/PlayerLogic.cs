@@ -1,9 +1,13 @@
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(IPlayerAnimation))]
 public class PlayerLogic : BaseLogic<IPlayerAnimation>
 {
+    [Header("PlayerLogic References")]
+    public TMP_Text NameDisplay;
     public Renderer Sail;
+    [HideInInspector]
     public string Name;
 
     protected override void SetupAnimation()
@@ -17,5 +21,11 @@ public class PlayerLogic : BaseLogic<IPlayerAnimation>
         if (player != transform) return;
 
         _animation.MoveStartAnimation(player, target);
+    }
+
+    public void SetName(string name)
+    {
+        Name = name;
+        NameDisplay.SetText(name);
     }
 }

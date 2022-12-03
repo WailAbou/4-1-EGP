@@ -12,6 +12,8 @@ public class UiManager : Singleton<UiManager>
     public Action OnEndToastr;
     public Action<string> OnStartCoordinates;
     public Action<bool> OnEndCoordinates;
+    public Action OnStartName;
+    public Action<string> OnEndName;
 
     private Vector2Int _coordinates;
 
@@ -43,6 +45,16 @@ public class UiManager : Singleton<UiManager>
     {
         var correct = (coordinates == _coordinates);
         OnEndCoordinates?.Invoke(correct);
+    }
+
+    public void StartName()
+    {
+        OnStartName?.Invoke();
+    }
+
+    public void EndName(string name)
+    {
+        OnEndName?.Invoke(name);
     }
 
     private void DisplayCoordinates(CellLogic cell)

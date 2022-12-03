@@ -5,7 +5,7 @@ public class ArrowLogic : BaseLogic<IArrowAnimation>
 {
     protected override void SetupLogic()
     {
-        _playerManager.OnTurnStart += DisplayArrow;
+        _playerManager.OnTurnStart += SetupArrow;
     }
 
     protected override void SetupAnimation()
@@ -13,13 +13,9 @@ public class ArrowLogic : BaseLogic<IArrowAnimation>
         _playerManager.OnPlayersSpawned += _animation.MoveAnimation;
     }
 
-    /// <summary>
-    /// Displaying the arrow above the player after every new turn.
-    /// </summary>
-    /// <param name="player">The player of this new turn.</param>
-    private void DisplayArrow(Transform player, Vector2Int gridPosition)
+    private void SetupArrow(Transform player, Vector2Int gridPosition)
     {
-        transform.position = player.position + Vector3.up / 2;
+        transform.position = player.position + new Vector3(0, 0.75f, 0);
         transform.parent = player;
     }
 }

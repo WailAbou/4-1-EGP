@@ -15,7 +15,7 @@ public class PlayerManager : Singleton<PlayerManager>
     public Action<Transform> OnMoveEnd;
     public Action<PlayerLogic[]> OnPlayersSpawned;
 
-    private Action<CellLogic> _checkPosition;
+    private Action<CellLogic> _setupPlayerAction;
     private List<Color> _colors = new List<Color>();
     public PlayerLogic[] _players;
     private PlayerLogic _currentPlayer;
@@ -27,15 +27,53 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public override void Setup()
     {
-        _checkPosition = cell => StartCoroutine(CheckPosition(cell));
+        _setupPlayerAction = cell => StartCoroutine(SetupPlayer(cell));
         _players = new PlayerLogic[_playerAmount];
         _colors.FillRandom(_playerAmount);
 
-        _generatorManager.OnAnimationsDone += SetupPlayer;
-        _cellManager.OnSelectCell += _checkPosition;
+        _cellManager.OnSelectCell += _setupPlayerAction;
+        _uiManager.OnEndName += InitPlayer;
+        _generatorManager.OnAnimationsDone += SetupTurn;
     }
 
-    private void SetupPlayer(CellLogic startCell, Level level)
+    private IEnumerator SetupPlayer(CellLogic cell)
+    {
+        bool correctCoordinates = (cell.Coordinates == _coordinates);
+        
+        if (correctCoordinates)
+        {
+            var startPosition = _cellManager.GetPosition(_coordinates);
+            yield return SpawnPlayer(startPosition);
+            _uiManager.StartName();
+        } 
+        else
+        {
+            yield return new WaitForEndOfFrame();
+            SetupTurn(null, _level);
+        }
+    }
+
+    private void InitPlayer(string name)
+    {
+        _currentPlayer.SetName(name);
+        bool allPlayersSpawned = !_players.Any(p => p == null);
+
+        if (allPlayersSpawned)
+        {
+            _playerIndex = 0;
+            _cellManager.OnSelectCell -= _setupPlayerAction;
+            _uiManager.OnEndName -= InitPlayer;
+
+            NextTurn();
+            OnPlayersSpawned?.Invoke(_players);
+        }
+        else
+        {
+            SetupTurn(null, _level);
+        }
+    }
+
+    private void SetupTurn(CellLogic startCell, Level level)
     {
         _level = level;
         _coordinates = _level.StartCoordinates[_spawnedPlayers];
@@ -46,33 +84,11 @@ public class PlayerManager : Singleton<PlayerManager>
         _playerIndex = Math.Max(_spawnedPlayers, (_playerIndex + 1) % _playerAmount);
     }
 
-    private IEnumerator CheckPosition(CellLogic cell)
-    {
-        if (cell.Coordinates == _coordinates)
-        {
-            var startPosition = _cellManager.GetPosition(_coordinates);
-            yield return SpawnPlayer(startPosition);
-        }
-
-        if (_players.Any(p => p == null))
-        {
-            yield return new WaitForEndOfFrame();
-            SetupPlayer(null, _level);
-        }
-        else
-        {
-            _playerIndex = 0;
-            _cellManager.OnSelectCell -= _checkPosition;
-
-            NextTurn();
-            OnPlayersSpawned?.Invoke(_players);
-        }
-    }
-
     private IEnumerator SpawnPlayer(Vector3 startPositon)
     {
         var position = new Vector3(startPositon.x, startPositon.y, startPositon.z);
         var player = Instantiate(PlayerPrefab, PlayersHolder).GetComponent<PlayerLogic>();
+        _currentPlayer = player;
 
         player.transform.position = position;
         player.Sail.material.color = _colors.PickRandom(true);
