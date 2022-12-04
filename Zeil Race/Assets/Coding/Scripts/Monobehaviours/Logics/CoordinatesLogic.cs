@@ -12,7 +12,7 @@ public class CoordinatesLogic : BaseLogic<ICoordinatesAnimation>
 
     protected override void SetupLogic()
     {
-        CoordinatesButton.onClick.AddListener(() => CheckAnswer());
+        CoordinatesButton.onClick.AddListener(() => SubmitAnswer());
     }
 
     protected override void SetupAnimation()
@@ -20,10 +20,15 @@ public class CoordinatesLogic : BaseLogic<ICoordinatesAnimation>
         _uiManager.OnStartCoordinates += _animation.SpawnAnimation;
     }
 
-    private void CheckAnswer()
+    private void SubmitAnswer()
     {
+        if (XCoordinates.text == "" || YCoordinates.text == "") return;
+
         _animation.StopAnimation();
         var coordinates = new Vector2Int(int.Parse(XCoordinates.text), int.Parse(YCoordinates.text));
         _uiManager.EndCoordinates(coordinates);
+
+        XCoordinates.text = "";
+        YCoordinates.text = "";
     }
 }

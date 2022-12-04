@@ -11,13 +11,20 @@ public class NameLogic : BaseLogic<INameAnimation>
 
     protected override void SetupLogic()
     {
-        SubmitButton.onClick.AddListener(() => _uiManager.EndName(NameInput.text));
-        _uiManager.OnEndName += _ => NameInput.text = "";
+        SubmitButton.onClick.AddListener(() => SubmitName());
     }
 
     protected override void SetupAnimation()
     {
         _uiManager.OnStartName += _animation.StartAnimation;
         _uiManager.OnEndName += _animation.StopAnimation;
+    }
+
+    private void SubmitName()
+    {
+        if (NameInput.text == "") return;
+
+        _uiManager.EndName(NameInput.text);
+        NameInput.text = "";
     }
 }

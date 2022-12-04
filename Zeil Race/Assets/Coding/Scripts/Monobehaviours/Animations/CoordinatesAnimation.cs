@@ -8,14 +8,13 @@ public class CoordinatesAnimation : MonoBehaviour, ICoordinatesAnimation
     public RectTransform CoordinatesPanel;
     public TMP_Text CoordinatesDisplay;
 
-    public void SpawnAnimation(string text)
+    public void SpawnAnimation()
     {
-        CoordinatesPanel.DOScale(Vector3.one, Animations.COORDINATES_SPAWN_DURATION);
-        CoordinatesDisplay.SetText(text);
+        CoordinatesPanel.DOAnchorPosY(100, Animations.COORDINATES_SPAWN_DURATION);
     }
 
     public void StopAnimation()
     {
-        CoordinatesPanel.DOScale(Vector3.zero, Animations.COORDINATES_END_DURATION);
+        CoordinatesPanel.DOAnchorPosY(-350, Animations.COORDINATES_END_DURATION);
     }
 }

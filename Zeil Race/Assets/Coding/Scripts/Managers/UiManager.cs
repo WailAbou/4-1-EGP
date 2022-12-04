@@ -10,7 +10,7 @@ public class UiManager : Singleton<UiManager>
 
     public Action<string, string> OnStartToastr;
     public Action OnEndToastr;
-    public Action<string> OnStartCoordinates;
+    public Action OnStartCoordinates;
     public Action<bool> OnEndCoordinates;
     public Action OnStartName;
     public Action<string> OnEndName;
@@ -19,7 +19,7 @@ public class UiManager : Singleton<UiManager>
 
     public override void Setup()
     {
-        _cellManager.OnHoverEnterCell += DisplayCoordinates;
+        _playerManager.OnTurnStart += DisplayCoordinates;
         _quizManager.OnQuizCorrect += DisplayEndScreen;
     }
 
@@ -35,10 +35,10 @@ public class UiManager : Singleton<UiManager>
         OnEndToastr?.Invoke();
     }
 
-    public void StartCoordinates(string text, Vector2Int coordinates)
+    public void StartCoordinates(Vector2Int coordinates)
     {
         _coordinates = coordinates;
-        OnStartCoordinates?.Invoke(text);
+        OnStartCoordinates?.Invoke();
     }
 
     public void EndCoordinates(Vector2Int coordinates)
@@ -57,9 +57,9 @@ public class UiManager : Singleton<UiManager>
         OnEndName?.Invoke(name);
     }
 
-    private void DisplayCoordinates(CellLogic cell)
+    private void DisplayCoordinates(Transform player, Vector2Int coordinates)
     {
-        CoordinatesDisplay.SetText($"Coordinaten: ({cell?.Coordinates.x} , {cell?.Coordinates.y})");
+        CoordinatesDisplay.SetText($"Coordinaten: ({coordinates.x} , {coordinates.y})");
     }
 
     private void DisplayEndScreen(Quiz quiz)

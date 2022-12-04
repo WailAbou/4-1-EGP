@@ -4,27 +4,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using System.Linq;
 using Random = UnityEngine.Random;
 
 public class DiceAnimation : MonoBehaviour, IDiceAnimation
 {
+    [Header("DiceAnimation References")]
     public Rigidbody DiceRigidBody;
-
-    private List<RectTransform> _dicePanels = new List<RectTransform>();
-    private List<TMP_Text> _diceDisplays = new List<TMP_Text> ();
-
-    private void Awake()
-    {
-        foreach (Transform child in transform)
-        {
-            _dicePanels.Add(child.GetComponent<RectTransform>());
-            _diceDisplays.Add(child.GetComponentInChildren<TMP_Text>());
-        }
-    }
+    public List<RectTransform> _dicePanels;
+    public List<TMP_Text> _diceDisplays;
 
     public void MoveStartAnimation(int allowedRolls)
     {
+        DiceRigidBody.useGravity = false;
         DiceRigidBody.position = new Vector3(0, 1, 0);
         DiceRigidBody.transform.DOLocalRotate(new Vector3(360, 0, 360), Animations.DICE_MOVE_DURATION, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear).SetLoops(int.MaxValue, LoopType.Restart);
     }
@@ -64,12 +55,12 @@ public class DiceAnimation : MonoBehaviour, IDiceAnimation
         StartCoroutine(ThrowDice(diceIndex, onDiceStop));
     }
 
-    public void MoveEndAnimation(CellLogic cell, int allowedRolls)
+    public void MoveEndAnimation(bool correct)
     {
         DiceRigidBody.useGravity = false;
         DiceRigidBody.position = new Vector3(0, 10, 0);
 
-        for (int i = 0; i < allowedRolls; i++)
+        for (int i = 0; i < _dicePanels.Count; i++)
         {
             _dicePanels[i].DOAnchorPosY(-150, Animations.DICE_END_DURATION);
         }

@@ -7,24 +7,44 @@ public class DiceLogic : BaseLogic<IDiceAnimation>
 
     private int _allowedRolls;
     private int _diceIndex;
-    private bool _dicesRolling;
+    private bool _ableToRoll;
 
     protected override void SetupLogic()
     {
-        _diceManager.OnStartDiceRolls += allowedRolls => { _allowedRolls = allowedRolls; _diceIndex = 0; _dicesRolling = true; WallsHolder.SetActive(true); };
-        _diceManager.OnDiceRolled += _ => _diceIndex++;
-        _diceManager.OnEndDiceRolls += _ => { _dicesRolling = false; WallsHolder.SetActive(false); };
+        _diceManager.OnStartDiceRolls += InitDice;
+        _diceManager.OnDiceRolled += DiceRolled;
+        _diceManager.OnEndDiceRolls += EndDice;
     }
 
     protected override void SetupAnimation()
     {
         _diceManager.OnStartDiceRolls += _animation.MoveStartAnimation;
-        _cellManager.OnSelectCell += (gridCell) => _animation.MoveEndAnimation(gridCell, _allowedRolls);
+        _uiManager.OnEndCoordinates += _animation.MoveEndAnimation;
+    }
+
+    private void InitDice(int allowedRolls)
+    {
+        _diceIndex = 0;
+        _allowedRolls = allowedRolls; 
+        _ableToRoll = true;
+        WallsHolder.SetActive(true);
+    }
+
+    private void DiceRolled(int diceIndex)
+    {
+        _diceIndex = diceIndex;
+        _animation.MoveStartAnimation(_allowedRolls);
+    }
+
+    private void EndDice(int totalRolled)
+    {
+        _ableToRoll = false; 
+        WallsHolder.SetActive(false);
     }
 
     private void Update()
     {
-        if (_dicesRolling && Input.GetKeyDown(KeyCode.Space))
+        if (_ableToRoll && Input.GetKeyDown(KeyCode.Space))
         {
             _animation.MoveStopAnimation(_diceIndex, diceRoll => _diceManager.EndRollDices(diceRoll));
         }

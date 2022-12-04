@@ -28,7 +28,7 @@ public class DiceManager : Singleton<DiceManager>
         _diceRoll += diceRoll;
         _diceIndex++;
 
-        if (_diceIndex < _allowedRolls) OnDiceRolled?.Invoke(diceRoll);
+        if (_diceIndex < _allowedRolls) OnDiceRolled?.Invoke(_diceIndex);
         else OnEndDiceRolls?.Invoke(_diceRoll);
     }
 }
