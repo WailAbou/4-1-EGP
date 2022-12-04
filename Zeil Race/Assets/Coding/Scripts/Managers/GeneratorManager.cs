@@ -12,7 +12,7 @@ public class GeneratorManager : Singleton<GeneratorManager>
     public List<GameObject> GridPiecePrefabs;
     public List<Level> Levels;
 
-    public Action OnGenerateDone;
+    public Action<CellLogic, CellLogic, Vector2Int> OnGenerateDone;
     public Action<CellLogic, Level> OnAnimationsDone;
 
     private Vector2Int _gridSize = new Vector2Int(10, 10);
@@ -33,23 +33,24 @@ public class GeneratorManager : Singleton<GeneratorManager>
 
     private IEnumerator GenerateGrid()
     {
+        CellLogic endCell = null;
         CellLogic startCell = null;
         var finalX = Random.Range((int)Math.Ceiling(_gridSize.x * 0.75f), _gridSize.x);
         var finalY = Random.Range((int)Math.Ceiling(_gridSize.y * 0.75f), _gridSize.y);
-            
+
         for (int y = 0; y < _gridSize.y; y++)
         {
             for (int x = 0; x < _gridSize.x; x++)
             {
-                var gridCellPrefab= (x == finalX && y == finalY) ? EndGridPiecePrefab : GetGridCellPrefab(x, y);
-                var gridCell = SpawnGridCell(x, y, gridCellPrefab);
-                if (startCell == null) startCell = gridCell;
+                var gridCellPrefab = (x == finalX && y == finalY) ? EndGridPiecePrefab : GetGridCellPrefab(x, y);
+                endCell = SpawnGridCell(x, y, gridCellPrefab);
+                if (startCell == null) startCell = endCell;
                 yield return new WaitForSecondsRealtime(Animations.GRIDPIECE_SPAWN_DELAY);
             }
         }
 
         yield return new WaitForSecondsRealtime(Animations.GRIDPIECE_SPAWN_DURATION);
-        OnGenerateDone?.Invoke();
+        OnGenerateDone?.Invoke(startCell, endCell, _gridSize);
         yield return new WaitForSecondsRealtime(Animations.BOARD_SPAWN_DURATION);
         OnAnimationsDone?.Invoke(startCell, Levels[_currentLevel]);
     }
