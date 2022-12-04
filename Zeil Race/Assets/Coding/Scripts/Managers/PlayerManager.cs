@@ -78,9 +78,9 @@ public class PlayerManager : Singleton<PlayerManager>
         _level = level;
         _coordinates = _level.StartCoordinates[_spawnedPlayers];
 
-        _uiManager.StartToastr($"Plaats speler {_playerIndex + 1} op de coordinaten: ({_coordinates.x}, {_coordinates.y})");
+        _uiManager.StartToastr($"Plaats de speler {_playerIndex + 1} op ", $"coordinaten: ({_coordinates.x}, {_coordinates.y})");
         _diceManager.EndRollDices(0);
-
+        
         _playerIndex = Math.Max(_spawnedPlayers, (_playerIndex + 1) % _playerAmount);
     }
 
@@ -99,7 +99,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void NextTurn()
     {
-        _uiManager.StartToastr($"Speler {_playerIndex + 1} beurt!");
+        _uiManager.StartToastr($"Speler {_playerIndex + 1} beurt!", "Spel begonnen!");
 
         _currentPlayer = _players[_playerIndex];
         _playerIndex = (_playerIndex + 1) % _playerAmount;

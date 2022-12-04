@@ -8,7 +8,7 @@ public class UiManager : Singleton<UiManager>
     [Header("UiManager References")]
     public TMP_Text CoordinatesDisplay;
 
-    public Action<string> OnStartToastr;
+    public Action<string, string> OnStartToastr;
     public Action OnEndToastr;
     public Action<string> OnStartCoordinates;
     public Action<bool> OnEndCoordinates;
@@ -23,14 +23,14 @@ public class UiManager : Singleton<UiManager>
         _quizManager.OnQuizCorrect += DisplayEndScreen;
     }
 
-    public void StartToastr(string text)
+    public void StartToastr(string title, string subtitle)
     {
-        StartCoroutine(StartToastrRoutine(text));
+        StartCoroutine(StartToastrRoutine(title, subtitle));
     }
 
-    private IEnumerator StartToastrRoutine(string text)
+    private IEnumerator StartToastrRoutine(string title, string subtitle)
     {
-        OnStartToastr?.Invoke(text);
+        OnStartToastr?.Invoke(title, subtitle);
         yield return new WaitForSecondsRealtime(Animations.TOASTR_SPAWN_DURATION + Animations.TOASTR_MOVE_DURATION + Animations.TOASTR_END_DURATION);
         OnEndToastr?.Invoke();
     }
@@ -66,6 +66,6 @@ public class UiManager : Singleton<UiManager>
     {
         if (quiz.QuestionType != QuestionType.Final) return;
 
-        StartToastr("Game Compleet!");
+        StartToastr("Speler X wint!", "Game Compleet!");
     }
 }

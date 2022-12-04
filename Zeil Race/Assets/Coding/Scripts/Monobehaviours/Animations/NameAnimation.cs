@@ -1,6 +1,5 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class NameAnimation : MonoBehaviour, INameAnimation
 {
@@ -9,11 +8,11 @@ public class NameAnimation : MonoBehaviour, INameAnimation
 
     public void StartAnimation()
     {
-        NamePanel.DOAnchorPosY(100, 1.0f);
+        NamePanel.DOAnchorPosY(100, Animations.NAME_SPAWN_DURATION);
     }
 
     public void StopAnimation(string name)
     {
-        NamePanel.DOAnchorPosY(-250, 1.0f);
+        NamePanel.DOAnchorPosY(-250, Animations.NAME_END_DURATION);
     }
 }

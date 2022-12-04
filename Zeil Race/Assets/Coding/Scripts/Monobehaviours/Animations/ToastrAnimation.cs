@@ -13,7 +13,7 @@ public class ToastrAnimation : MonoBehaviour, IToastrAnimation
         _toastrPanel = _toastr.GetComponent<RectTransform>();
     }
 
-    public void StartToastrAnimation(string text)
+    public void StartToastrAnimation(string title, string subtitle)
     {
         _toastrPanel.DOKill();
         _sequence?.Kill();
