@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4caa46ac141b1c4b98ec5371844eb2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CoordinatesPrefab: {fileID: 5077966615488587952, guid: 8628a35e85be9ee41945bf53e5628894, type: 3}
 --- !u!114 &7518140239220200520
 MonoBehaviour:
   m_ObjectHideFlags: 0

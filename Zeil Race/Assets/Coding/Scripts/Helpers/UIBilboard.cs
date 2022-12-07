@@ -8,11 +8,11 @@ public class UIBilboard : MonoBehaviour
     private void Start()
     {
         _cameraTransform = Camera.main.transform;
-        _originalRotation = transform.rotation;
+        _originalRotation = transform.localRotation;
     }
 
     private void Update()
     {
-        transform.rotation = _cameraTransform.rotation * _originalRotation;
+        transform.localRotation = _cameraTransform.localRotation * _originalRotation;
     }
 }

@@ -33,6 +33,7 @@ public class DiceLogic : BaseLogic<IDiceAnimation>
     private void DiceRolled(int diceIndex)
     {
         _diceIndex = diceIndex;
+        _ableToRoll = true;
         _animation.MoveStartAnimation(_allowedRolls);
     }
 
@@ -46,6 +47,7 @@ public class DiceLogic : BaseLogic<IDiceAnimation>
     {
         if (_ableToRoll && Input.GetKeyDown(KeyCode.Space))
         {
+            _ableToRoll = false;
             _animation.MoveStopAnimation(_diceIndex, diceRoll => _diceManager.EndRollDices(diceRoll));
         }
     }

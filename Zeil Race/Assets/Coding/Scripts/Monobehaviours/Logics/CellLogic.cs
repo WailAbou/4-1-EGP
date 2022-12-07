@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(ICellAnimation))]
 public class CellLogic : BaseLogic<ICellAnimation>
 {
+    [HideInInspector]
     public Vector2Int Coordinates;
     public QuestionType QuestionType;
 
@@ -16,11 +17,12 @@ public class CellLogic : BaseLogic<ICellAnimation>
         _playerManager.OnTurnStart += (_, currentPlayerCoordinates) => _currentPlayerCoordinates = currentPlayerCoordinates;
         _diceManager.OnEndDiceRolls += roll => { _playerAbleToMove = true; _range = roll; };
         _cellManager.OnSelectCell += _ => { _playerAbleToMove = false; };
+        _cameraManager.OnSwitchCam += _animation.DisplayCoordinates;
     }
 
     protected override void SetupAnimation()
     {
-        _animation.SpawnAnimation();
+        _animation.SpawnAnimation(Coordinates);
     }
 
     private void OnMouseEnter()
