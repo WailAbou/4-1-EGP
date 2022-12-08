@@ -17,12 +17,11 @@ public class CellLogic : BaseLogic<ICellAnimation>
         _playerManager.OnTurnStart += (_, currentPlayerCoordinates) => _currentPlayerCoordinates = currentPlayerCoordinates;
         _diceManager.OnEndDiceRolls += roll => { _playerAbleToMove = true; _range = roll; };
         _cellManager.OnSelectCell += _ => { _playerAbleToMove = false; };
-        _cameraManager.OnSwitchCam += _animation.DisplayCoordinates;
     }
 
     protected override void SetupAnimation()
     {
-        _animation.SpawnAnimation(Coordinates);
+        _animation.SpawnAnimation(Coordinates, _uiManager.BoardCoordinatesHolder);
     }
 
     private void OnMouseEnter()

@@ -8,7 +8,6 @@ public class CameraManager : Singleton<CameraManager>
     [Header("CameraManager References")]
     public List<CinemachineVirtualCamera> Cams;
     public CinemachineVirtualCamera FollowCam;
-    public Action<int> OnSwitchCam;
 
     private CinemachineVirtualCamera _camCurrent;
     private int _camIndex;
@@ -47,7 +46,5 @@ public class CameraManager : Singleton<CameraManager>
 
         _camCurrent = Cams[_camIndex];
         _camCurrent.Priority = 11;
-
-        OnSwitchCam?.Invoke(_camIndex);
     }
 }
