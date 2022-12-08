@@ -6,6 +6,7 @@ using TMPro;
 public class UiManager : Singleton<UiManager>
 {
     [Header("UiManager References")]
+    public Transform BoardCoordinatesHolder;
     public TMP_Text CoordinatesDisplay;
 
     public Action<string, string> OnStartToastr;

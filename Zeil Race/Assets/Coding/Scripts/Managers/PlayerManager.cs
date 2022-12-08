@@ -21,7 +21,7 @@ public class PlayerManager : Singleton<PlayerManager>
     private PlayerLogic _currentPlayer;
     private Vector2Int _coordinates;
     private Level _level;
-    private int _playerAmount = 1;
+    private int _playerAmount = 3;
     private int _playerIndex;
     private int _spawnedPlayers;
 

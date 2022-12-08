@@ -12,12 +12,13 @@ public class BoardAnimation : MonoBehaviour, IBoardAnimation
 
     public void SpawnAnimation(CellLogic startCell, CellLogic endCell, Vector2Int gridSize)
     {
-        var startPos = startCell.transform.position + new Vector3(0, 0.01f, 0);
-        var endPos = endCell.transform.position + new Vector3(0, 0.01f, 0);
+        var startPos = startCell.transform.position;
+        var endPos = endCell.transform.position;
         var gridDimensions = new Vector2(0.3f, 0.3f);
 
-        var xTweens = SetupAxis(gridSize.x, new Vector3(0, 0, gridDimensions.y), new Vector3(endPos.x, startPos.y, startPos.z));
-        var yTweens = SetupAxis(gridSize.y, new Vector3(gridDimensions.x, 0, 0), new Vector3(startPos.x, startPos.y, endPos.z));
+        Debug.Log(new Vector3(endPos.x, startPos.y + 0.02f, startPos.z));
+        var xTweens = SetupAxis(gridSize.x, new Vector3(0, 0, gridDimensions.y), new Vector3(endPos.x, startPos.y + 0.02f, startPos.z));
+        var yTweens = SetupAxis(gridSize.y, new Vector3(gridDimensions.x, 0, 0), new Vector3(startPos.x, startPos.y + 0.02f, endPos.z));
         SetupAnimation(xTweens, yTweens);
     }
 
@@ -42,9 +43,11 @@ public class BoardAnimation : MonoBehaviour, IBoardAnimation
         for (int i = 0; i < amount; i++)
         {
             var line = Instantiate(LinePrefab, LinesHolder).GetComponent<LineRenderer>();
+            if (i == 0) line.widthMultiplier = 0.02f;
+
             line.SetPosition(0, line.GetPosition(0) + offset * i);
             line.SetPosition(1, line.GetPosition(1) + offset * i);
-            if (i == 0) line.widthMultiplier = 0.02f;
+
             tweens[i] = DOTween.To(() => line.GetPosition(1), x => line.SetPosition(1, x), targetPosition + offset * i, (i == 0) ? startDuration : normalDuration);
         }
         return tweens;
