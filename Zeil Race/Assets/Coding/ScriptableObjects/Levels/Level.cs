@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Level", menuName = "ScriptableObjects/Level", order = 1)]
 public class Level : ScriptableObject
 {
-    public List<Vector2> StartPositions = new List<Vector2>();
+    public List<Vector2Int> StartCoordinates = new List<Vector2Int>();
 }

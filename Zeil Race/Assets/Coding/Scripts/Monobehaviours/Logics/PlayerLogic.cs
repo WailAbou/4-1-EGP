@@ -1,9 +1,14 @@
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(IPlayerAnimation))]
 public class PlayerLogic : BaseLogic<IPlayerAnimation>
 {
+    [Header("PlayerLogic References")]
+    public TMP_Text NameDisplay;
     public Renderer Sail;
+    [HideInInspector]
+    public string Name;
 
     protected override void SetupAnimation()
     {
@@ -11,15 +16,16 @@ public class PlayerLogic : BaseLogic<IPlayerAnimation>
         _animation.SpawnAnimation();
     }
 
-    /// <summary>
-    /// Starts the movements animation if the moved player is equal to this player.
-    /// </summary>
-    /// <param name="player">The current player that made a turn.</param>
-    /// <param name="target">The target to where the player wants to go to.</param>
     private void MoveStart(Transform player, Transform target)
     {
         if (player != transform) return;
 
         _animation.MoveStartAnimation(player, target);
+    }
+
+    public void SetName(string name)
+    {
+        Name = name;
+        NameDisplay.SetText(name);
     }
 }

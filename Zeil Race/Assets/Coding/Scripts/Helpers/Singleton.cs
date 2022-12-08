@@ -12,7 +12,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected CameraManager _cameraManager;
     protected GeneratorManager _generatorManager;
-    protected GridManager _gridManager;
+    protected CellManager _cellManager;
     protected PlayerManager _playerManager;
     protected UiManager _uiManager;
     protected QuizManager _quizManager;
@@ -32,7 +32,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
         _cameraManager = CameraManager.Instance;
         _generatorManager = GeneratorManager.Instance;
-        _gridManager = GridManager.Instance;
+        _cellManager = CellManager.Instance;
         _playerManager = PlayerManager.Instance;
         _uiManager = UiManager.Instance;
         _quizManager = QuizManager.Instance;

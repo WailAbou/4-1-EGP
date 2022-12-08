@@ -1,25 +1,44 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    private CellLogic _cell;
     private Transform _target;
+    private bool _gameStarted;
 
     public override void Setup()
     {
-        _gridManager.OnSelectGridCell += TakeTurn;
+        _playerManager.OnPlayersSpawned += _ => _gameStarted = true;
+        _cellManager.OnSelectCell += InputCoordinates;
+        _uiManager.OnEndCoordinates += correct => StartCoroutine(TakeTurn(correct));
         _quizManager.OnQuizCorrect += CorrectAnswer;
         _quizManager.OnQuizIncorrect += IncorrectAnswer;
     }
 
-    /// <summary>
-    /// Stores the target and takes the turn if there is no question otherwise start a new quiz.
-    /// </summary>
-    /// <param name="gridCell">The current selected gridcell to make have the player make a turn to.</param>
-    public void TakeTurn(GridCell gridCell)
+    private void InputCoordinates(CellLogic cell)
     {
-        _target = gridCell.gameObject.transform;
-        if (gridCell.QuestionType == QuestionType.None) _playerManager.TakeTurn(_target);
-        else _quizManager.StartQuiz(gridCell.QuestionType);
+        if (!_gameStarted) return;
+
+        _cell = cell;
+        _uiManager.StartCoordinates(cell.Coordinates);
+    }
+
+    private IEnumerator TakeTurn(bool correct)
+    {
+        if (!_gameStarted) yield return null;
+
+        if (correct)
+        {
+            _target = _cell.gameObject.transform;
+            if (_cell.QuestionType == QuestionType.None) _playerManager.TakeTurn(_target);
+            else _quizManager.StartQuiz(_cell.QuestionType);
+        } 
+        else
+        {
+            yield return new WaitForEndOfFrame();
+            _playerManager.NextTurn();
+        }
     }
 
     private void CorrectAnswer(Quiz quiz)

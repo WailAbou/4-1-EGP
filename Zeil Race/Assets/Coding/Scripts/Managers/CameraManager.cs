@@ -1,18 +1,23 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Cinemachine;
+using System;
 
 public class CameraManager : Singleton<CameraManager>
 {
     [Header("CameraManager References")]
     public List<CinemachineVirtualCamera> Cams;
     public CinemachineVirtualCamera FollowCam;
+    public Action<int> OnSwitchCam;
 
     private CinemachineVirtualCamera _camCurrent;
     private int _camIndex;
 
     public override void Setup()
     {
+        _camCurrent = Cams[_camIndex];
+        _camCurrent.Priority = 11;
+
         _playerManager.OnPlayersSpawned += SetFollowCam;
         _playerManager.OnTurnStart += SetFollowTarget;
     }
@@ -35,14 +40,14 @@ public class CameraManager : Singleton<CameraManager>
         FollowCam.LookAt = player.transform;
     }
 
-    /// <summary>
-    /// Cycling between the camera's by setting the new camera priority higher then the current one.
-    /// </summary>
     public void SwitchCams()
     {
         if (_camCurrent) _camCurrent.Priority = 10;
+        _camIndex = (_camIndex + 1) % Cams.Count;
+
         _camCurrent = Cams[_camIndex];
         _camCurrent.Priority = 11;
-        _camIndex = (_camIndex + 1) % Cams.Count;
+
+        OnSwitchCam?.Invoke(_camIndex);
     }
 }

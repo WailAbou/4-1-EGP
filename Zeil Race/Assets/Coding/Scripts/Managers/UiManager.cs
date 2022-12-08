@@ -8,40 +8,64 @@ public class UiManager : Singleton<UiManager>
     [Header("UiManager References")]
     public TMP_Text CoordinatesDisplay;
 
-    public Action<string> OnStartToastr;
+    public Action<string, string> OnStartToastr;
     public Action OnEndToastr;
+    public Action OnStartCoordinates;
+    public Action<bool> OnEndCoordinates;
+    public Action OnStartName;
+    public Action<string> OnEndName;
+
+    private Vector2Int _coordinates;
 
     public override void Setup()
     {
-        _gridManager.OnHoverEnterGridCell += DisplayCoordinates;
+        _playerManager.OnTurnStart += DisplayCoordinates;
         _quizManager.OnQuizCorrect += DisplayEndScreen;
     }
 
-    public void StartToastr(string text)
+    public void StartToastr(string title, string subtitle)
     {
-        StartCoroutine(StartToastrRoutine(text));
+        StartCoroutine(StartToastrRoutine(title, subtitle));
     }
 
-    /// <summary>
-    /// Starts the toastr with the display text waits until it has spawned and moved then ends it.
-    /// </summary>
-    /// <param name="text">The toastr text to be displayed.</param>
-    private IEnumerator StartToastrRoutine(string text)
+    private IEnumerator StartToastrRoutine(string title, string subtitle)
     {
-        OnStartToastr?.Invoke(text);
-        yield return new WaitForSecondsRealtime(Animations.TOASTR_SPAWN_DURATION + Animations.TOASTR_MOVE_DURATION);
+        OnStartToastr?.Invoke(title, subtitle);
+        yield return new WaitForSecondsRealtime(Animations.TOASTR_SPAWN_DURATION + Animations.TOASTR_MOVE_DURATION + Animations.TOASTR_END_DURATION);
         OnEndToastr?.Invoke();
     }
 
-    private void DisplayCoordinates(GridCell gridCell)
+    public void StartCoordinates(Vector2Int coordinates)
     {
-        CoordinatesDisplay.SetText($"Coordinaten: ({gridCell?.position.x} , {gridCell?.position.y})");
+        _coordinates = coordinates;
+        OnStartCoordinates?.Invoke();
+    }
+
+    public void EndCoordinates(Vector2Int coordinates)
+    {
+        var correct = (coordinates == _coordinates);
+        OnEndCoordinates?.Invoke(correct);
+    }
+
+    public void StartName()
+    {
+        OnStartName?.Invoke();
+    }
+
+    public void EndName(string name)
+    {
+        OnEndName?.Invoke(name);
+    }
+
+    private void DisplayCoordinates(Transform player, Vector2Int coordinates)
+    {
+        CoordinatesDisplay.SetText($"Coordinaten: ({coordinates.x} , {coordinates.y})");
     }
 
     private void DisplayEndScreen(Quiz quiz)
     {
         if (quiz.QuestionType != QuestionType.Final) return;
 
-        StartToastr("Game Compleet!");
+        StartToastr("Speler X wint!", "Game Compleet!");
     }
 }

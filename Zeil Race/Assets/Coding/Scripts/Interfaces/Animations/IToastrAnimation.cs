@@ -1,5 +1,4 @@
 public interface IToastrAnimation
 {
-    public void StartToastrAnimation(string text);
-    public void EndToastrAnimation();
+    public void StartToastrAnimation(string title, string subtitle);
 }
