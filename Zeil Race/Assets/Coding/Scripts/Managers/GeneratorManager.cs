@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class GeneratorManager : Singleton<GeneratorManager>
 {
@@ -35,14 +34,12 @@ public class GeneratorManager : Singleton<GeneratorManager>
     {
         CellLogic endCell = null;
         CellLogic startCell = null;
-        var finalX = Random.Range((int)Math.Ceiling(_gridSize.x * 0.75f), _gridSize.x);
-        var finalY = Random.Range((int)Math.Ceiling(_gridSize.y * 0.75f), _gridSize.y);
 
         for (int y = 0; y < _gridSize.y; y++)
         {
             for (int x = 0; x < _gridSize.x; x++)
             {
-                var gridCellPrefab = (x == finalX && y == finalY) ? EndGridPiecePrefab : GetGridCellPrefab(x, y);
+                var gridCellPrefab = GetGridCellPrefab(x, y);
                 endCell = SpawnGridCell(x, y, gridCellPrefab);
                 if (startCell == null) startCell = endCell;
                 yield return new WaitForSecondsRealtime(Animations.GRIDPIECE_SPAWN_DELAY);
@@ -57,9 +54,21 @@ public class GeneratorManager : Singleton<GeneratorManager>
 
     private GameObject GetGridCellPrefab(int x, int y)
     {
-        var islandChance = Random.Range(0, x + y);
-        var gridCellPrefab = islandChance > 2 ? GridPiecePrefabs[1] : GridPiecePrefabs[0];
-        return gridCellPrefab;
+        var celLType = Levels[_currentLevel].CellTypes[x + (10 * y)];
+        switch (celLType)
+        {
+            case CellType.Water:
+                return GridPiecePrefabs[0];
+
+            case CellType.Land:
+                return GridPiecePrefabs[1];
+
+            case CellType.Final:
+                return EndGridPiecePrefab;
+
+            default:
+                return GridPiecePrefabs[1];
+        }
     }
     
     private CellLogic SpawnGridCell(int x, int y, GameObject gridCellPrefab)

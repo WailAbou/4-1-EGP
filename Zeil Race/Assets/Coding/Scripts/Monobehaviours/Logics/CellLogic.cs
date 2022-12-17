@@ -5,6 +5,7 @@ public class CellLogic : BaseLogic<ICellAnimation>
 {
     [HideInInspector]
     public Vector2Int Coordinates;
+    public CellType CellType;
     public QuestionType QuestionType;
 
     private Vector2Int _currentPlayerCoordinates;
@@ -53,3 +54,5 @@ public class CellLogic : BaseLogic<ICellAnimation>
 }
 
 public enum QuestionType { None, Normal, Final };
+
+public enum CellType { Water, Land, Final };
