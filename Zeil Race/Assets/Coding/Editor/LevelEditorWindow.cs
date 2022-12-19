@@ -29,7 +29,7 @@ public class LevelEditorWindow : EditorWindow
         if (_level != null)
         {
             LevelEditor();
-            if (GUILayout.Button("Update")) UpdateLevel();
+            if (GUILayout.Button("SAVE")) SaveLevel();
         }
     }
 
@@ -77,7 +77,7 @@ public class LevelEditorWindow : EditorWindow
         _loaded = true;
     }
 
-    private void UpdateLevel()
+    private void SaveLevel()
     {
         for (int y = 0; y < _levelSize.y; y++)
         {
@@ -88,6 +88,10 @@ public class LevelEditorWindow : EditorWindow
                 _level.CellTypes[i] = _cellMappings[cellContent];
             }
         }
+
+        EditorUtility.SetDirty(_level);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
     private void UpdateCell()

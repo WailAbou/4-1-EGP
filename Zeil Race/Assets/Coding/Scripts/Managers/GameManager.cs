@@ -43,6 +43,7 @@ public class GameManager : Singleton<GameManager>
 
     private void CorrectAnswer(Quiz quiz)
     {
+        //_diceManager.ExtraRoll();
         _quizManager.EndQuiz();
         _playerManager.TakeTurn(_target);
     }

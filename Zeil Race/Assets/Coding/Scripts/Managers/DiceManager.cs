@@ -23,12 +23,21 @@ public class DiceManager : Singleton<DiceManager>
         OnStartDiceRolls?.Invoke(_allowedRolls);
     }
 
+    public void ExtraRoll() 
+    {
+        _allowedRolls = 2; 
+    }
+
     public void EndRollDices(int diceRoll)
     {
         _diceRoll += diceRoll;
         _diceIndex++;
 
         if (_diceIndex < _allowedRolls) OnDiceRolled?.Invoke(_diceIndex);
-        else OnEndDiceRolls?.Invoke(_diceRoll);
+        else
+        {
+            _allowedRolls = 1;
+            OnEndDiceRolls?.Invoke(_diceRoll);
+        }
     }
 }
