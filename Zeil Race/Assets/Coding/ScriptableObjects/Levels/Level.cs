@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,4 +6,5 @@ using UnityEngine;
 public class Level : ScriptableObject
 {
     public List<Vector2Int> StartCoordinates = new List<Vector2Int>();
+    public CellType[] CellTypes = new CellType[10 * 10];
 }

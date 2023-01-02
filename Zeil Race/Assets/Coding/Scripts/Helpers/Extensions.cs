@@ -19,4 +19,18 @@ public static class Extensions
             colors.Add(color);
         }
     }
+
+    public static void Fill<T>(this T[] values, T fillValue)
+    {
+        for(int i = 0; i < values.Length; i++)
+        {
+            values[i] = fillValue;
+        }
+    }
+
+    public static void FlexibleSpace(int pixels)
+    {
+        GUILayout.Space(pixels);
+        GUILayout.FlexibleSpace();
+    }
 }

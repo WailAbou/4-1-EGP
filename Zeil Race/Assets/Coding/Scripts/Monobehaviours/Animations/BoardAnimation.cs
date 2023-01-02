@@ -16,7 +16,6 @@ public class BoardAnimation : MonoBehaviour, IBoardAnimation
         var endPos = endCell.transform.position;
         var gridDimensions = new Vector2(0.3f, 0.3f);
 
-        Debug.Log(new Vector3(endPos.x, startPos.y + 0.02f, startPos.z));
         var xTweens = SetupAxis(gridSize.x, new Vector3(0, 0, gridDimensions.y), new Vector3(endPos.x, startPos.y + 0.02f, startPos.z));
         var yTweens = SetupAxis(gridSize.y, new Vector3(gridDimensions.x, 0, 0), new Vector3(startPos.x, startPos.y + 0.02f, endPos.z));
         SetupAnimation(xTweens, yTweens);
