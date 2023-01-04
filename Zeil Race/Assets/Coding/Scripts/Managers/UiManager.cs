@@ -67,6 +67,6 @@ public class UiManager : Singleton<UiManager>
     {
         if (quiz.QuestionType != QuestionType.Final) return;
 
-        StartToastr("Speler X wint!", "Game Compleet!");
+        StartToastr($"{_playerManager.CurrentPlayer.Name} wint!", "Game Compleet!");
     }
 }

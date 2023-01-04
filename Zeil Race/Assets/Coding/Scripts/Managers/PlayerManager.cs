@@ -14,11 +14,11 @@ public class PlayerManager : Singleton<PlayerManager>
     public Action<Transform, Transform> OnMoveStart;
     public Action<Transform> OnMoveEnd;
     public Action<PlayerLogic[]> OnPlayersSpawned;
+    public PlayerLogic CurrentPlayer;
 
     private Action<CellLogic> _setupPlayerAction;
     private List<Color> _colors = new List<Color>();
     public PlayerLogic[] _players;
-    private PlayerLogic _currentPlayer;
     private Vector2Int _coordinates;
     private Level _level;
     private int _playerAmount = 3;
@@ -55,7 +55,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void InitPlayer(string name)
     {
-        _currentPlayer.SetName(name);
+        CurrentPlayer.SetName(name);
         bool allPlayersSpawned = !_players.Any(p => p == null);
 
         if (allPlayersSpawned)
@@ -88,7 +88,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         var position = new Vector3(startPositon.x, startPositon.y, startPositon.z);
         var player = Instantiate(PlayerPrefab, PlayersHolder).GetComponent<PlayerLogic>();
-        _currentPlayer = player;
+        CurrentPlayer = player;
 
         player.transform.position = position;
         player.Sail.material.color = _colors.PickRandom(true);
@@ -99,13 +99,13 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void NextTurn()
     {
-        _uiManager.StartToastr($"Speler {_playerIndex + 1} beurt!", "Spel begonnen!");
+        CurrentPlayer = _players[_playerIndex];
+        _uiManager.StartToastr($"{CurrentPlayer.Name}'s beurt!", "Spel begonnen!");
 
-        _currentPlayer = _players[_playerIndex];
         _playerIndex = (_playerIndex + 1) % _playerAmount;
-        Vector2Int cellCoordinates = _cellManager.GetCoordinates(_currentPlayer.transform.position);
+        Vector2Int cellCoordinates = _cellManager.GetCoordinates(CurrentPlayer.transform.position);
 
-        OnTurnStart?.Invoke(_currentPlayer.transform, cellCoordinates);
+        OnTurnStart?.Invoke(CurrentPlayer.transform, cellCoordinates);
     }
 
     public void TakeTurn(Transform target)
@@ -115,9 +115,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private IEnumerator TakeTurnRoutine(Transform target)
     {
-        OnMoveStart?.Invoke(_currentPlayer.transform, target);
+        OnMoveStart?.Invoke(CurrentPlayer.transform, target);
         yield return new WaitForSecondsRealtime(Animations.PLAYER_MOVE_DURATION + 1.0f);
         NextTurn();
-        OnMoveEnd?.Invoke(_currentPlayer.transform);
+        OnMoveEnd?.Invoke(CurrentPlayer.transform);
     }
 }

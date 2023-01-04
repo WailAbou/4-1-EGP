@@ -12,8 +12,10 @@ public class GameManager : Singleton<GameManager>
         _playerManager.OnPlayersSpawned += _ => _gameStarted = true;
         _cellManager.OnSelectCell += InputCoordinates;
         _uiManager.OnEndCoordinates += correct => StartCoroutine(TakeTurn(correct));
+        
         _quizManager.OnQuizCorrect += CorrectAnswer;
         _quizManager.OnQuizIncorrect += IncorrectAnswer;
+        _rewardManager.OnRewardEnd += () => _playerManager.TakeTurn(_target);
     }
 
     private void InputCoordinates(CellLogic cell)
@@ -43,9 +45,8 @@ public class GameManager : Singleton<GameManager>
 
     private void CorrectAnswer(Quiz quiz)
     {
-        //_diceManager.ExtraRoll();
         _quizManager.EndQuiz();
-        _playerManager.TakeTurn(_target);
+        _rewardManager.StartReward();
     }
 
     private void IncorrectAnswer(Quiz quiz)

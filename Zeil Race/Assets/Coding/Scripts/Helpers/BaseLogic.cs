@@ -10,6 +10,7 @@ public abstract class BaseLogic<T> : MonoBehaviour
     protected QuizManager _quizManager;
     protected DiceManager _diceManager;
     protected GameManager _gameManager;
+    protected RewardManager _rewardManager;
     protected T _animation;
 
     protected virtual void Start()
@@ -22,6 +23,7 @@ public abstract class BaseLogic<T> : MonoBehaviour
         _quizManager = QuizManager.Instance;
         _diceManager = DiceManager.Instance;
         _gameManager = GameManager.Instance;
+        _rewardManager = RewardManager.Instance;
         _animation = GetComponent<T>();
 
         SetupLogic();

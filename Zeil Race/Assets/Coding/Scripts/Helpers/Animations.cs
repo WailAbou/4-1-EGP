@@ -14,6 +14,7 @@ public static class Animations
     public const float DICE_SPAWN_DURATION = 0.1f;
     public const float COORDINATES_SPAWN_DURATION = 0.5f;
     public const float NAME_SPAWN_DURATION = 0.5f;
+    public const float REWARD_SPAWN_DURATION = 0.5f;
 
     [Header("Move Durations")]
     public const float PLAYER_MOVE_DURATION = 1;
@@ -27,6 +28,7 @@ public static class Animations
     public const float DICE_END_DURATION = 1;
     public const float COORDINATES_END_DURATION = 0.5f;
     public const float NAME_END_DURATION = 0.5f;
+    public const float REWARD_END_DURATION = 0.5f;
 
 
     //[Header("Spawn Delays")]
@@ -34,13 +36,14 @@ public static class Animations
 
     //[Header("Spawn Durations")]
     //public const float GRIDPIECE_SPAWN_DURATION = 0;
-    //public const float BOARD_SPAWN_DURATION = 5;
+    //public const float BOARD_SPAWN_DURATION = 0;
     //public const float PLAYER_SPAWN_DURATION = 1;
     //public const float QUIZ_SPAWN_DURATION = 0;
     //public const float TOASTR_SPAWN_DURATION = 0.5f;
     //public const float DICE_SPAWN_DURATION = 0;
     //public const float COORDINATES_SPAWN_DURATION = 0.5f;
     //public const float NAME_SPAWN_DURATION = 0.5f;
+    //public const float REWARD_SPAWN_DURATION = 0.5f;
 
     //[Header("Move Durations")]
     //public const float PLAYER_MOVE_DURATION = 0;
@@ -54,4 +57,5 @@ public static class Animations
     //public const float DICE_END_DURATION = 0;
     //public const float COORDINATES_END_DURATION = 0.5f;
     //public const float NAME_END_DURATION = 0.5f;
+    //public const float REWARD_END_DURATION = 0.5f;
 }
