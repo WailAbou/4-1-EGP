@@ -22,19 +22,25 @@ public class RewardLogic : BaseLogic<IRewardAnimation>
 
     private void InitOptions(PlayerLogic[] players)
     {
-        //MineRewardButton.onClick.AddListener(() => CheckAnswer(answer));
+        MineRewardButton.onClick.AddListener(RewardMine);
 
         foreach (var player in players)
         {
             var playerRewardButton = Instantiate(RewardButtonPrefab, RewardsHolder);
             playerRewardButton.GetComponentInChildren<TMP_Text>().SetText($"Extra zet speler: {player.Name}");
-            playerRewardButton.GetComponentInChildren<Button>().onClick.AddListener(() => ExtraRoll(player));
+            playerRewardButton.GetComponentInChildren<Button>().onClick.AddListener(() => RewardRoll(player));
         }
     }
 
-    private void ExtraRoll(PlayerLogic player)
+    private void RewardMine()
     {
-        _diceManager.ExtraRoll(player);
+        _rewardManager.RewardMine(_playerManager.CurrentPlayer.transform);
+        _animation.CloseAnimation();
+    }
+
+    private void RewardRoll(PlayerLogic player)
+    {
+        _rewardManager.RewardRoll(player.transform);
         _animation.CloseAnimation();
         _rewardManager.EndReward();
     }

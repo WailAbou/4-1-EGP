@@ -22,6 +22,13 @@ public class GameManager : Singleton<GameManager>
     {
         if (!_gameStarted) return;
 
+        if (_rewardManager.GetMine())
+        {
+            cell.IsMine = true;
+            _rewardManager.EndReward();
+            return;
+        }
+
         _cell = cell;
         _uiManager.StartCoordinates(cell.Coordinates);
     }
