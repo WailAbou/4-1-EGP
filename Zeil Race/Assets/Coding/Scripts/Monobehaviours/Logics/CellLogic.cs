@@ -14,7 +14,7 @@ public class CellLogic : BaseLogic<ICellAnimation>
     private Vector2Int _currentPlayerCoordinates;
     private int _range;
     private bool _playerAbleToMove;
-    private bool _interactable => (_playerAbleToMove && InRange()) || _rewardManager.GetMine();
+    private bool _interactable => (_playerAbleToMove && !_playerManager.HasPlayer(Coordinates) && InRange()) || _rewardManager.GetMine();
 
     protected override void SetupLogic()
     {

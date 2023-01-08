@@ -120,4 +120,22 @@ public class PlayerManager : Singleton<PlayerManager>
         NextTurn();
         OnMoveEnd?.Invoke(CurrentPlayer.transform);
     }
+
+    public bool HasPlayer(Vector2Int coordinates)
+    {
+        if (_spawnedPlayers != _playerAmount) return false;
+        bool hasPlayer = _players.Where(p => GetCoordinates(p.transform) == coordinates).Any();
+        return hasPlayer;
+    }
+
+    private Vector2Int GetCoordinates(Transform target)
+    {
+        float offset = 1.35f;
+        float gridSize = 0.3f;
+
+        int x = Mathf.CeilToInt((target.position.x + offset) / gridSize);
+        int y = Mathf.CeilToInt((target.position.z + offset) / gridSize);
+        
+        return new Vector2Int(x, y);
+    }
 }
