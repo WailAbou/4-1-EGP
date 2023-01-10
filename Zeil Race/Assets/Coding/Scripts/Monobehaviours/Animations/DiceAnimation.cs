@@ -13,7 +13,7 @@ public class DiceAnimation : MonoBehaviour, IDiceAnimation
     public List<RectTransform> _dicePanels;
     public List<TMP_Text> _diceDisplays;
 
-    public void MoveStartAnimation(int allowedRolls)
+    public void MoveStartAnimation()
     {
         DiceRigidBody.useGravity = false;
         DiceRigidBody.position = new Vector3(0, 1, 0);

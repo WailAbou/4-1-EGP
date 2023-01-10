@@ -3,11 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(IDiceAnimation))]
 public class DiceLogic : BaseLogic<IDiceAnimation>
 {
+    [Header("DiceLogic References")]
     public GameObject WallsHolder;
 
-    private int _allowedRolls;
     private int _diceIndex;
-    private bool _ableToRoll;
+    private bool _canRoll;
 
     protected override void SetupLogic()
     {
@@ -18,37 +18,34 @@ public class DiceLogic : BaseLogic<IDiceAnimation>
 
     protected override void SetupAnimation()
     {
-        _diceManager.OnStartDiceRolls += _animation.MoveStartAnimation;
+        _diceManager.OnStartDiceRolls += _ => _animation.MoveStartAnimation();
         _uiManager.OnEndCoordinates += _animation.MoveEndAnimation;
     }
 
     private void InitDice(int allowedRolls)
     {
         _diceIndex = 0;
-        _allowedRolls = allowedRolls; 
-        _ableToRoll = true;
+        _canRoll = true;
         WallsHolder.SetActive(true);
     }
 
-    private void DiceRolled(int diceIndex)
+    private void DiceRolled(int nextDice, bool endRoll)
     {
-        _diceIndex = diceIndex;
-        _ableToRoll = true;
-        _animation.MoveStartAnimation(_allowedRolls);
+        _diceIndex = nextDice;
+        if (!endRoll) _animation.MoveStartAnimation();
     }
 
     private void EndDice(int totalRolled)
     {
-        _ableToRoll = false; 
+        _canRoll = false; 
         WallsHolder.SetActive(false);
     }
 
     private void Update()
     {
-        if (_ableToRoll && Input.GetKeyDown(KeyCode.Space))
+        if (_canRoll && Input.GetKeyDown(KeyCode.Space))
         {
-            _ableToRoll = false;
-            _animation.MoveStopAnimation(_diceIndex, diceRoll => _diceManager.EndRollDices(diceRoll));
+            _animation.MoveStopAnimation(_diceIndex, _diceManager.EndRollDices);
         }
     }
 }

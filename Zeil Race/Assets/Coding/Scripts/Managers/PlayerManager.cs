@@ -14,14 +14,15 @@ public class PlayerManager : Singleton<PlayerManager>
     public Action<Transform, Transform> OnMoveStart;
     public Action<Transform> OnMoveEnd;
     public Action<PlayerLogic[]> OnPlayersSpawned;
+    public PlayerLogic CurrentPlayer;
+    public bool CanPlace { get; private set; }
 
     private Action<CellLogic> _setupPlayerAction;
     private List<Color> _colors = new List<Color>();
     public PlayerLogic[] _players;
-    private PlayerLogic _currentPlayer;
     private Vector2Int _coordinates;
     private Level _level;
-    private int _playerAmount = 3;
+    private int _playerAmount = 1;
     private int _playerIndex;
     private int _spawnedPlayers;
 
@@ -34,6 +35,8 @@ public class PlayerManager : Singleton<PlayerManager>
         _cellManager.OnSelectCell += _setupPlayerAction;
         _uiManager.OnEndName += InitPlayer;
         _generatorManager.OnAnimationsDone += SetupTurn;
+        _diceManager.OnEndDiceRolls += _ => CanPlace = true;
+        _cellManager.OnSelectCell += _ => CanPlace = false;
     }
 
     private IEnumerator SetupPlayer(CellLogic cell)
@@ -45,6 +48,7 @@ public class PlayerManager : Singleton<PlayerManager>
             var startPosition = _cellManager.GetPosition(_coordinates);
             yield return SpawnPlayer(startPosition);
             _uiManager.StartName();
+            _cellManager.CanPlace = false;
         } 
         else
         {
@@ -55,7 +59,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void InitPlayer(string name)
     {
-        _currentPlayer.SetName(name);
+        CurrentPlayer.SetName(name);
         bool allPlayersSpawned = !_players.Any(p => p == null);
 
         if (allPlayersSpawned)
@@ -77,10 +81,9 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         _level = level;
         _coordinates = _level.StartCoordinates[_spawnedPlayers];
+        _cellManager.CanPlace = true;
 
         _uiManager.StartToastr($"Plaats de speler {_playerIndex + 1} op ", $"coordinaten: ({_coordinates.x}, {_coordinates.y})");
-        _diceManager.EndRollDices(0);
-        
         _playerIndex = Math.Max(_spawnedPlayers, (_playerIndex + 1) % _playerAmount);
     }
 
@@ -88,7 +91,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         var position = new Vector3(startPositon.x, startPositon.y, startPositon.z);
         var player = Instantiate(PlayerPrefab, PlayersHolder).GetComponent<PlayerLogic>();
-        _currentPlayer = player;
+        CurrentPlayer = player;
 
         player.transform.position = position;
         player.Sail.material.color = _colors.PickRandom(true);
@@ -99,13 +102,13 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void NextTurn()
     {
-        _uiManager.StartToastr($"Speler {_playerIndex + 1} beurt!", "Spel begonnen!");
+        CurrentPlayer = _players[_playerIndex];
+        _uiManager.StartToastr($"{CurrentPlayer.Name}'s beurt!", "Spel begonnen!");
 
-        _currentPlayer = _players[_playerIndex];
         _playerIndex = (_playerIndex + 1) % _playerAmount;
-        Vector2Int cellCoordinates = _cellManager.GetCoordinates(_currentPlayer.transform.position);
+        Vector2Int cellCoordinates = _cellManager.GetCoordinates(CurrentPlayer.transform.position);
 
-        OnTurnStart?.Invoke(_currentPlayer.transform, cellCoordinates);
+        OnTurnStart?.Invoke(CurrentPlayer.transform, cellCoordinates);
     }
 
     public void TakeTurn(Transform target)
@@ -115,9 +118,26 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private IEnumerator TakeTurnRoutine(Transform target)
     {
-        OnMoveStart?.Invoke(_currentPlayer.transform, target);
+        OnMoveStart?.Invoke(CurrentPlayer.transform, target);
         yield return new WaitForSecondsRealtime(Animations.PLAYER_MOVE_DURATION + 1.0f);
         NextTurn();
-        OnMoveEnd?.Invoke(_currentPlayer.transform);
+        OnMoveEnd?.Invoke(CurrentPlayer.transform);
+    }
+
+    public bool EmptyCell(CellLogic cell)
+    {
+        bool allFree = _players.All(p => p == null ? true : (GetCoordinates(p.transform) != cell.Coordinates));
+        return allFree;
+    }
+
+    private Vector2Int GetCoordinates(Transform target)
+    {
+        float offset = 1.35f;
+        float gridSize = 0.3f;
+
+        int x = Mathf.CeilToInt((target.position.x + offset) / gridSize);
+        int y = Mathf.CeilToInt((target.position.z + offset) / gridSize);
+        
+        return new Vector2Int(x, y);
     }
 }

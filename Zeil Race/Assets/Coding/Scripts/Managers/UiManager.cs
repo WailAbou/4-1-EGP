@@ -8,6 +8,7 @@ public class UiManager : Singleton<UiManager>
     [Header("UiManager References")]
     public Transform BoardCoordinatesHolder;
     public TMP_Text CoordinatesDisplay;
+    public GameObject SkipButton;
 
     public Action<string, string> OnStartToastr;
     public Action OnEndToastr;
@@ -20,6 +21,7 @@ public class UiManager : Singleton<UiManager>
 
     public override void Setup()
     {
+        _diceManager.OnDiceRolled += (_, _) => SkipButton.SetActive(false);
         _playerManager.OnTurnStart += DisplayCoordinates;
         _quizManager.OnQuizCorrect += DisplayEndScreen;
     }
@@ -61,12 +63,13 @@ public class UiManager : Singleton<UiManager>
     private void DisplayCoordinates(Transform player, Vector2Int coordinates)
     {
         CoordinatesDisplay.SetText($"Coordinaten: ({coordinates.x} , {coordinates.y})");
+        SkipButton.SetActive(true);
     }
 
     private void DisplayEndScreen(Quiz quiz)
     {
         if (quiz.QuestionType != QuestionType.Final) return;
 
-        StartToastr("Speler X wint!", "Game Compleet!");
+        StartToastr($"{_playerManager.CurrentPlayer.Name} wint!", "Game Compleet!");
     }
 }

@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(ICellAnimation))]
@@ -8,17 +8,24 @@ public class CellLogic : BaseLogic<ICellAnimation>
     public Vector2Int Coordinates;
     public CellType CellType;
     public QuestionType QuestionType;
+    public bool IsMine;
 
     private Vector2Int _currentPlayerCoordinates;
     private int _range;
-    private bool _playerAbleToMove;
-    private bool _interactable => _playerAbleToMove && InRange();
+
+    private bool _isInteractable
+    {
+        get
+        {
+            bool validTurn = InTurnRange() && _playerManager.CanPlace;
+            return (validTurn || _cellManager.CanPlace || _rewardManager.CanPlaceMine()) && _playerManager.EmptyCell(this);
+        }
+    }
 
     protected override void SetupLogic()
     {
         _playerManager.OnTurnStart += (_, currentPlayerCoordinates) => _currentPlayerCoordinates = currentPlayerCoordinates;
-        _diceManager.OnEndDiceRolls += roll => { _playerAbleToMove = true; _range = roll; };
-        _cellManager.OnSelectCell += _ => { _playerAbleToMove = false; };
+        _diceManager.OnEndDiceRolls += roll => _range = roll;
     }
 
     protected override void SetupAnimation()
@@ -28,9 +35,9 @@ public class CellLogic : BaseLogic<ICellAnimation>
 
     private void OnMouseEnter()
     {
-        if (!_interactable) return;
+        if (!_isInteractable) return;
 
-        _animation.HoverEnterAnimation(this);
+        _animation.HoverEnterAnimation(this, _rewardManager.CanPlaceMine());
         _cellManager.HoverCell(this);
     }
 
@@ -41,16 +48,25 @@ public class CellLogic : BaseLogic<ICellAnimation>
 
     private void OnMouseDown()
     {
-        if (!_interactable) return;
+        if (!_isInteractable) return;
 
-        _cellManager.SelectCell(this);
+        if (!IsMine) _cellManager.SelectCell(this);
+        else StartCoroutine(ExplodeMine());
     }
 
-    private bool InRange()
+    private bool InTurnRange()
     {
         int xCost = Mathf.Abs(_currentPlayerCoordinates.x - Coordinates.x);
         int yCost = Mathf.Abs(_currentPlayerCoordinates.y - Coordinates.y);
         return (xCost + yCost) == _range || _range == 0;
+    }
+
+    private IEnumerator ExplodeMine()
+    {
+        IsMine = false;
+        _uiManager.StartToastr("Oops!", "Een mijn is geëxplodeerd!");
+        yield return new WaitForSeconds(3);
+        _playerManager.NextTurn();
     }
 }
 

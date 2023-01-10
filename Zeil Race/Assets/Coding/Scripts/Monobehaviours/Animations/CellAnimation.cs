@@ -36,9 +36,9 @@ public class CellAnimation : MonoBehaviour, ICellAnimation
         }
     }
 
-    public void HoverEnterAnimation(CellLogic cell)
+    public void HoverEnterAnimation(CellLogic cell, bool isMine)
     {
-        _renderer.material.color = Color.white;
+        _renderer.material.color = isMine ? Color.red : Color.white;
     }
 
     public void HoverLeaveAnimation(CellLogic cell)
