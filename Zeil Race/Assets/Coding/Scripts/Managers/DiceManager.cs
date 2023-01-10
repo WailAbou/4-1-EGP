@@ -4,7 +4,7 @@ using UnityEngine;
 public class DiceManager : Singleton<DiceManager>
 {
     public Action<int> OnStartDiceRolls;
-    public Action<int> OnDiceRolled;
+    public Action<int, bool> OnDiceRolled;
     public Action<int> OnEndDiceRolls;
 
     private int _allowedRolls = 1;
@@ -18,7 +18,7 @@ public class DiceManager : Singleton<DiceManager>
 
     public void StartDiceRolls(Transform player, Vector2Int gridPosition)
     {
-        _allowedRolls = _rewardManager.GetRolls(player);
+        _allowedRolls = _rewardManager.GetAllowedRolls(player);
         _diceRoll = 0;
         _diceIndex = 0;
         OnStartDiceRolls?.Invoke(_allowedRolls);
@@ -26,14 +26,16 @@ public class DiceManager : Singleton<DiceManager>
 
     public void EndRollDices(int diceRoll)
     {
-        _diceRoll += diceRoll;
         _diceIndex++;
+        _diceRoll += diceRoll;
+        bool endRoll = _diceIndex == _allowedRolls;
 
-        if (_diceIndex < _allowedRolls) OnDiceRolled?.Invoke(_diceIndex);
-        else
+        OnDiceRolled?.Invoke(_diceIndex, endRoll);
+
+        if (endRoll)
         {
             _allowedRolls = 1;
             OnEndDiceRolls?.Invoke(_diceRoll);
-        }
+        } 
     }
 }

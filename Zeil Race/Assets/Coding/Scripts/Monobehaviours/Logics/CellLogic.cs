@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(ICellAnimation))]
@@ -13,14 +12,20 @@ public class CellLogic : BaseLogic<ICellAnimation>
 
     private Vector2Int _currentPlayerCoordinates;
     private int _range;
-    private bool _playerAbleToMove;
-    private bool _interactable => (_playerAbleToMove && !_playerManager.HasPlayer(Coordinates) && InRange()) || _rewardManager.GetMine();
+
+    private bool _isInteractable
+    {
+        get
+        {
+            bool validTurn = InTurnRange() && _playerManager.CanPlace;
+            return (validTurn || _cellManager.CanPlace || _rewardManager.CanPlaceMine()) && _playerManager.EmptyCell(this);
+        }
+    }
 
     protected override void SetupLogic()
     {
         _playerManager.OnTurnStart += (_, currentPlayerCoordinates) => _currentPlayerCoordinates = currentPlayerCoordinates;
-        _diceManager.OnEndDiceRolls += roll => { _playerAbleToMove = true; _range = roll; };
-        _cellManager.OnSelectCell += _ => _playerAbleToMove = false;
+        _diceManager.OnEndDiceRolls += roll => _range = roll;
     }
 
     protected override void SetupAnimation()
@@ -30,9 +35,9 @@ public class CellLogic : BaseLogic<ICellAnimation>
 
     private void OnMouseEnter()
     {
-        if (!_interactable) return;
+        if (!_isInteractable) return;
 
-        _animation.HoverEnterAnimation(this, _rewardManager.GetMine());
+        _animation.HoverEnterAnimation(this, _rewardManager.CanPlaceMine());
         _cellManager.HoverCell(this);
     }
 
@@ -43,13 +48,13 @@ public class CellLogic : BaseLogic<ICellAnimation>
 
     private void OnMouseDown()
     {
-        if (!_interactable) return;
+        if (!_isInteractable) return;
 
         if (!IsMine) _cellManager.SelectCell(this);
         else StartCoroutine(ExplodeMine());
     }
 
-    private bool InRange()
+    private bool InTurnRange()
     {
         int xCost = Mathf.Abs(_currentPlayerCoordinates.x - Coordinates.x);
         int yCost = Mathf.Abs(_currentPlayerCoordinates.y - Coordinates.y);

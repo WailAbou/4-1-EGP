@@ -12,12 +12,13 @@ public class CoordinatesLogic : BaseLogic<ICoordinatesAnimation>
 
     protected override void SetupLogic()
     {
-        CoordinatesButton.onClick.AddListener(() => SubmitAnswer());
+        CoordinatesButton.onClick.AddListener(SubmitAnswer);
+        YCoordinates.onSubmit.AddListener(_ => SubmitAnswer());
     }
 
     protected override void SetupAnimation()
     {
-        _uiManager.OnStartCoordinates += _animation.SpawnAnimation;
+        _uiManager.OnStartCoordinates += () => { _animation.SpawnAnimation(); XCoordinates.Select(); };
     }
 
     private void SubmitAnswer()

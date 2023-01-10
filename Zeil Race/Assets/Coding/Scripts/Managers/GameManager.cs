@@ -22,7 +22,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (!_gameStarted) return;
 
-        if (_rewardManager.GetMine())
+        if (_rewardManager.CanPlaceMine())
         {
             cell.IsMine = true;
             _rewardManager.EndReward();

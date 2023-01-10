@@ -7,6 +7,7 @@ public class CellManager : Singleton<CellManager>
     public Action<CellLogic> OnSelectCell;
     public Action<CellLogic> OnHoverEnterCell;
     public Action<CellLogic> OnHoverLeaveCell;
+    public bool CanPlace;
 
     private CellLogic _hoveredCell;
 

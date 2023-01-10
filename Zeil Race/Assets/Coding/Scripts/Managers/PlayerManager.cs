@@ -15,13 +15,14 @@ public class PlayerManager : Singleton<PlayerManager>
     public Action<Transform> OnMoveEnd;
     public Action<PlayerLogic[]> OnPlayersSpawned;
     public PlayerLogic CurrentPlayer;
+    public bool CanPlace { get; private set; }
 
     private Action<CellLogic> _setupPlayerAction;
     private List<Color> _colors = new List<Color>();
     public PlayerLogic[] _players;
     private Vector2Int _coordinates;
     private Level _level;
-    private int _playerAmount = 3;
+    private int _playerAmount = 1;
     private int _playerIndex;
     private int _spawnedPlayers;
 
@@ -34,6 +35,8 @@ public class PlayerManager : Singleton<PlayerManager>
         _cellManager.OnSelectCell += _setupPlayerAction;
         _uiManager.OnEndName += InitPlayer;
         _generatorManager.OnAnimationsDone += SetupTurn;
+        _diceManager.OnEndDiceRolls += _ => CanPlace = true;
+        _cellManager.OnSelectCell += _ => CanPlace = false;
     }
 
     private IEnumerator SetupPlayer(CellLogic cell)
@@ -45,6 +48,7 @@ public class PlayerManager : Singleton<PlayerManager>
             var startPosition = _cellManager.GetPosition(_coordinates);
             yield return SpawnPlayer(startPosition);
             _uiManager.StartName();
+            _cellManager.CanPlace = false;
         } 
         else
         {
@@ -77,10 +81,9 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         _level = level;
         _coordinates = _level.StartCoordinates[_spawnedPlayers];
+        _cellManager.CanPlace = true;
 
         _uiManager.StartToastr($"Plaats de speler {_playerIndex + 1} op ", $"coordinaten: ({_coordinates.x}, {_coordinates.y})");
-        _diceManager.EndRollDices(0);
-        
         _playerIndex = Math.Max(_spawnedPlayers, (_playerIndex + 1) % _playerAmount);
     }
 
@@ -121,11 +124,10 @@ public class PlayerManager : Singleton<PlayerManager>
         OnMoveEnd?.Invoke(CurrentPlayer.transform);
     }
 
-    public bool HasPlayer(Vector2Int coordinates)
+    public bool EmptyCell(CellLogic cell)
     {
-        if (_spawnedPlayers != _playerAmount) return false;
-        bool hasPlayer = _players.Where(p => GetCoordinates(p.transform) == coordinates).Any();
-        return hasPlayer;
+        bool allFree = _players.All(p => p == null ? true : (GetCoordinates(p.transform) != cell.Coordinates));
+        return allFree;
     }
 
     private Vector2Int GetCoordinates(Transform target)

@@ -21,7 +21,7 @@ public class UiManager : Singleton<UiManager>
 
     public override void Setup()
     {
-        _diceManager.OnEndDiceRolls += _ => SkipButton.SetActive(false);
+        _diceManager.OnDiceRolled += (_, _) => SkipButton.SetActive(false);
         _playerManager.OnTurnStart += DisplayCoordinates;
         _quizManager.OnQuizCorrect += DisplayEndScreen;
     }
