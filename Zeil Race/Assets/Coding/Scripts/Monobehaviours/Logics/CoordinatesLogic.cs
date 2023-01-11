@@ -10,15 +10,24 @@ public class CoordinatesLogic : BaseLogic<ICoordinatesAnimation>
     public TMP_InputField XCoordinates;
     public TMP_InputField YCoordinates;
 
+    private TMP_InputField _nextInput;
+
     protected override void SetupLogic()
     {
-        CoordinatesButton.onClick.AddListener(SubmitAnswer);
+        XCoordinates.onSelect.AddListener(_ => _nextInput = YCoordinates);
+        YCoordinates.onSelect.AddListener(_ => _nextInput = XCoordinates);
         YCoordinates.onSubmit.AddListener(_ => SubmitAnswer());
+        CoordinatesButton.onClick.AddListener(SubmitAnswer);
     }
 
     protected override void SetupAnimation()
     {
         _uiManager.OnStartCoordinates += () => { _animation.SpawnAnimation(); XCoordinates.Select(); };
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab) && _nextInput != null) _nextInput.Select();
     }
 
     private void SubmitAnswer()
